@@ -36,19 +36,23 @@ Button.displayName = "Button"
 interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
     label?: string;
     error?: string;
+    density?: 'default' | 'compact';
 }
 export const Input = React.forwardRef<HTMLInputElement, InputProps>(
-    ({ className, label, error, ...props }, ref) => {
+    ({ className, label, error, density = 'default', ...props }, ref) => {
+        const isCompact = density === 'compact';
+
         return (
-            <div className="flex flex-col space-y-1.5 w-full">
+            <div className={`flex flex-col w-full ${isCompact ? 'space-y-1' : 'space-y-1.5'}`}>
                 {label && (
-                    <label className="text-sm font-medium text-slate-700 dark:text-slate-300">
+                    <label className={`font-medium text-slate-700 dark:text-slate-300 ${isCompact ? 'text-[11px] uppercase tracking-wider opacity-80' : 'text-sm'}`}>
                         {label}
                     </label>
                 )}
                 <input
                     className={cn(
-                        "flex h-10 w-full rounded-xl border border-slate-300 dark:border-slate-700 bg-white/50 dark:bg-slate-950/50 backdrop-blur-sm px-3 py-2 text-sm text-slate-900 dark:text-slate-100 placeholder:text-slate-400 dark:placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/50 dark:focus:ring-indigo-500/50 focus:border-indigo-500 disabled:cursor-not-allowed disabled:opacity-50 transition-all",
+                        "flex w-full rounded-xl border border-slate-300 dark:border-slate-700 bg-white/50 dark:bg-slate-950/50 backdrop-blur-sm text-slate-900 dark:text-slate-100 placeholder:text-slate-400 dark:placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/50 dark:focus:ring-indigo-500/50 focus:border-indigo-500 disabled:cursor-not-allowed disabled:opacity-50 transition-all",
+                        isCompact ? 'h-8 px-2.5 py-1 text-xs rounded-lg' : 'h-10 px-3 py-2 text-sm rounded-xl',
                         error && "border-red-500 focus:ring-red-400 focus:border-red-500",
                         className
                     )}

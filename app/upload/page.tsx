@@ -67,12 +67,12 @@ export default function UploadPage() {
         <motion.div
             initial={{ borderColor: 'transparent', backgroundColor: 'transparent' }}
             animate={{ borderColor: 'rgba(239, 68, 68, 0.4)', backgroundColor: 'rgba(239, 68, 68, 0.05)' }}
-            className="p-4 rounded-xl border-2 relative mt-4 mb-4"
+            className="px-3 pb-3 pt-4 rounded-xl border-2 relative"
         >
-            <div className="absolute -top-3 right-4 bg-rose-500 text-white text-[10px] font-bold px-2 py-0.5 rounded-full tracking-wider uppercase flex items-center gap-1 shadow-sm">
+            <div className="absolute -top-2.5 right-4 bg-rose-500 text-white text-[9px] font-bold px-2 py-0.5 rounded-full tracking-wider uppercase flex items-center gap-1 shadow-sm">
                 <ShieldAlert className="w-3 h-3" /> PII SHIELD ACTIVE
             </div>
-            <Input label={label} type="password" placeholder={placeholder} />
+            <Input density="compact" label={label} type="password" placeholder={placeholder} />
         </motion.div>
     );
 
@@ -196,13 +196,13 @@ export default function UploadPage() {
                                                         </Button>
                                                     </div>
                                                     <div className="grid grid-cols-2 gap-6">
-                                                        <Input label="First Name" placeholder="Jane" />
-                                                        <Input label="Last Name" placeholder="Doe" />
+                                                        <Input density="compact" label="First Name" placeholder="Jane" />
+                                                        <Input density="compact" label="Last Name" placeholder="Doe" />
                                                     </div>
-                                                    <Input label="Email Address" placeholder="jane.doe@example.com" type="email" />
-                                                    <Input label="Phone Number" placeholder="(555) 000-0000" type="tel" />
+                                                    <Input density="compact" label="Email Address" placeholder="jane.doe@example.com" type="email" />
+                                                    <Input density="compact" label="Phone Number" placeholder="(555) 000-0000" type="tel" />
                                                     {renderPIIShield("Social Security Number", "***-**-####")}
-                                                    <Input label="Comments or Notes" placeholder="Type here..." />
+                                                    <Input density="compact" label="Comments or Notes" placeholder="Type here..." />
                                                 </div>
                                             )}
 
@@ -210,42 +210,42 @@ export default function UploadPage() {
                                             {detectedForm === 'afl-cio' && (
                                                 <div className="space-y-6">
                                                     <div className="grid grid-cols-2 gap-4">
-                                                        <Input label="Participant's Name" placeholder="Full name..." />
-                                                        <Input label="Date of Birth" placeholder="MM/DD/YYYY" type="date" />
+                                                        <Input density="compact" label="Participant's Name" placeholder="Full name..." />
+                                                        <Input density="compact" label="Date of Birth" placeholder="MM/DD/YYYY" type="date" />
                                                     </div>
-                                                    <Input label="Address" placeholder="Street Address" />
+                                                    <Input density="compact" label="Address" placeholder="Street Address" />
                                                     <div className="grid grid-cols-3 gap-4">
-                                                        <Input label="City" placeholder="City" />
-                                                        <Input label="State" placeholder="State" />
-                                                        <Input label="Zip Code" placeholder="Zip" />
+                                                        <Input density="compact" label="City" placeholder="City" />
+                                                        <Input density="compact" label="State" placeholder="State" />
+                                                        <Input density="compact" label="Zip Code" placeholder="Zip" />
                                                     </div>
-                                                    <Input label="County" placeholder="County" />
+                                                    <Input density="compact" label="County" placeholder="County" />
                                                     <div className="grid grid-cols-2 gap-4">
-                                                        <Input label="Phone" type="tel" placeholder="(555) 000-0000" />
-                                                        <Input label="Alternate Phone/Email" placeholder="..." />
+                                                        <Input density="compact" label="Phone" type="tel" placeholder="(555) 000-0000" />
+                                                        <Input density="compact" label="Alternate Phone/Email" placeholder="..." />
                                                     </div>
 
                                                     {renderPIIShield("Social Security Number", "***-**-####")}
 
                                                     <div className="grid grid-cols-3 gap-4">
-                                                        <Input label="Sex" placeholder="Male / Female / Other" />
-                                                        <Input label="Age" type="number" placeholder="0" />
-                                                        <Input label="Household Size" type="number" placeholder="0" />
+                                                        <Input density="compact" label="Sex" placeholder="Male / Female / Other" />
+                                                        <Input density="compact" label="Age" type="number" placeholder="0" />
+                                                        <Input density="compact" label="Household Size" type="number" placeholder="0" />
                                                     </div>
-                                                    <Input label="Parent/Guardian's Name (if minor)" placeholder="..." />
-                                                    <Input label="Status" placeholder="Single / Married / Separated / Divorced / Widowed" />
+                                                    <Input density="compact" label="Parent/Guardian's Name (if minor)" placeholder="..." />
+                                                    <Input density="compact" label="Status" placeholder="Single / Married / Separated / Divorced / Widowed" />
 
                                                     <div className="grid grid-cols-1 gap-4">
-                                                        <Input label="Any Household Member Disabled?" placeholder="Yes / No" />
-                                                        <Input label="Active Military or Veteran?" placeholder="Yes / No" />
-                                                        <Input label="Single Head of Household w/ Children?" placeholder="Yes / No" />
+                                                        <Input density="compact" label="Any Household Member Disabled?" placeholder="Yes / No" />
+                                                        <Input density="compact" label="Active Military or Veteran?" placeholder="Yes / No" />
+                                                        <Input density="compact" label="Single Head of Household w/ Children?" placeholder="Yes / No" />
                                                     </div>
 
                                                     <div className="grid grid-cols-2 gap-4">
-                                                        <Input label="Race" placeholder="Select..." />
-                                                        <Input label="Ethnicity" placeholder="Select..." />
+                                                        <Input density="compact" label="Race" placeholder="Select..." />
+                                                        <Input density="compact" label="Ethnicity" placeholder="Select..." />
                                                     </div>
-                                                    <Input label="Total Family Income Bracket (HUD Standard)" placeholder="Below 30% / 50% / 80% / Over 80%" />
+                                                    <Input density="compact" label="Total Family Income Bracket (HUD Standard)" placeholder="Below 30% / 50% / 80% / Over 80%" />
 
                                                     {/* Dynamic Array Mock */}
                                                     <div className="mt-8 pt-6 border-t border-slate-200 dark:border-slate-800">
@@ -253,12 +253,12 @@ export default function UploadPage() {
                                                         <div className="bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-4 rounded-xl mb-4 space-y-4">
                                                             <div className="flex justify-between items-center text-sm font-semibold opacity-60"><span>Dependant 1</span></div>
                                                             <div className="grid grid-cols-2 gap-4">
-                                                                <Input label="First and Last Name" placeholder="..." />
-                                                                <Input label="Relation" placeholder="..." />
+                                                                <Input density="compact" label="First and Last Name" placeholder="..." />
+                                                                <Input density="compact" label="Relation" placeholder="..." />
                                                             </div>
                                                             <div className="grid grid-cols-2 gap-4">
-                                                                <Input label="Date of Birth" placeholder="MM/DD/YYYY" />
-                                                                <Input label="Social Security #" type="password" placeholder="***-**-####" />
+                                                                <Input density="compact" label="Date of Birth" placeholder="MM/DD/YYYY" />
+                                                                <Input density="compact" label="Social Security #" type="password" placeholder="***-**-####" />
                                                             </div>
                                                         </div>
                                                         <Button variant="outline" className="w-full border-dashed border-2 py-6 text-slate-500">
@@ -272,41 +272,41 @@ export default function UploadPage() {
                                             {detectedForm === 'soles-for-christ' && (
                                                 <div className="space-y-6">
                                                     <div className="grid grid-cols-2 gap-4">
-                                                        <Input label="Parent / Guardian Name" placeholder="Full name..." />
-                                                        <Input label="Date" placeholder="MM/DD/YYYY" type="date" />
+                                                        <Input density="compact" label="Parent / Guardian Name" placeholder="Full name..." />
+                                                        <Input density="compact" label="Date" placeholder="MM/DD/YYYY" type="date" />
                                                     </div>
                                                     {renderPIIShield("Participant DOB / SSN", "***-**-####")}
-                                                    <Input label="Address" placeholder="123 Main St" />
+                                                    <Input density="compact" label="Address" placeholder="123 Main St" />
                                                     <div className="grid grid-cols-2 gap-4">
-                                                        <Input label="City & Zip" placeholder="..." />
-                                                        <Input label="County" placeholder="..." />
+                                                        <Input density="compact" label="City & Zip" placeholder="..." />
+                                                        <Input density="compact" label="County" placeholder="..." />
                                                     </div>
-                                                    <Input label="Phone Number" type="tel" placeholder="(555) 000-0000" />
-                                                    <Input label="Number in Household (Children / Adults / Seniors)" placeholder="Ex: 2 / 2 / 0" />
+                                                    <Input density="compact" label="Phone Number" type="tel" placeholder="(555) 000-0000" />
+                                                    <Input density="compact" label="Number in Household (Children / Adults / Seniors)" placeholder="Ex: 2 / 2 / 0" />
 
                                                     <div className="grid grid-cols-2 gap-4">
-                                                        <Input label="Race" placeholder="Select..." />
-                                                        <Input label="Ethnicity" placeholder="Select..." />
+                                                        <Input density="compact" label="Race" placeholder="Select..." />
+                                                        <Input density="compact" label="Ethnicity" placeholder="Select..." />
                                                     </div>
-                                                    <Input label="Income Bracket (HUD Size)" placeholder="Below 30% / 50% / 80% / Over 80%" />
+                                                    <Input density="compact" label="Income Bracket (HUD Size)" placeholder="Below 30% / 50% / 80% / Over 80%" />
 
                                                     <div className="mt-8 pt-6 border-t border-slate-200 dark:border-slate-800">
                                                         <h3 className="font-bold text-lg mb-4 text-slate-800 dark:text-slate-200">Child Details</h3>
                                                         <div className="bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-4 rounded-xl mb-4 space-y-4">
                                                             <div className="flex justify-between items-center text-sm font-semibold opacity-60"><span>Child 1</span></div>
-                                                            <Input label="Child's First & Last Name" placeholder="..." />
+                                                            <Input density="compact" label="Child's First & Last Name" placeholder="..." />
                                                             <div className="grid grid-cols-3 gap-4">
-                                                                <Input label="Birthdate" placeholder="MM/DD/YYYY" />
-                                                                <Input label="Age" type="number" placeholder="0" />
-                                                                <Input label="Sex" placeholder="M/F" />
+                                                                <Input density="compact" label="Birthdate" placeholder="MM/DD/YYYY" />
+                                                                <Input density="compact" label="Age" type="number" placeholder="0" />
+                                                                <Input density="compact" label="Sex" placeholder="M/F" />
                                                             </div>
                                                             <div className="grid grid-cols-2 gap-4">
-                                                                <Input label="School" placeholder="..." />
-                                                                <Input label="Grade (P-12)" placeholder="..." />
+                                                                <Input density="compact" label="School" placeholder="..." />
+                                                                <Input density="compact" label="Grade (P-12)" placeholder="..." />
                                                             </div>
                                                             <div className="grid grid-cols-2 gap-4">
-                                                                <Input label="Shoe Size" placeholder="..." />
-                                                                <Input label="Category (Boys/Girls/Mens/Womens)" placeholder="Select..." />
+                                                                <Input density="compact" label="Shoe Size" placeholder="..." />
+                                                                <Input density="compact" label="Category (Boys/Girls/Mens/Womens)" placeholder="Select..." />
                                                             </div>
                                                         </div>
                                                         <Button variant="outline" className="w-full border-dashed border-2 py-6 text-slate-500">
