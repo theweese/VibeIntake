@@ -149,17 +149,16 @@ export default function UploadPage() {
                 </Card>
 
                 {/* Right Side: Morph Output */}
-                <Card className="flex flex-col bg-white dark:bg-slate-950 text-slate-900 dark:text-slate-100 border-none shadow-2xl relative overflow-hidden">
-                    <div className="absolute top-0 right-0 p-4">
-                        <Badge variant="outline" className="text-[10px] bg-white dark:bg-black font-mono tracking-widest text-indigo-500 border-indigo-200 dark:border-indigo-800">AI COMPILED</Badge>
+                <Card className="flex flex-col bg-white dark:bg-slate-950 text-slate-900 dark:text-slate-100 border-none shadow-2xl relative overflow-hidden h-full min-h-[600px]">
+                    <div className="bg-slate-100 border-b border-slate-200 dark:bg-slate-900 dark:border-slate-800 p-4 flex justify-between items-center shrink-0">
+                        <div className="flex gap-2">
+                            <div className="w-3 h-3 rounded-full bg-red-400"></div>
+                            <div className="w-3 h-3 rounded-full bg-amber-400"></div>
+                            <div className="w-3 h-3 rounded-full bg-green-400"></div>
+                        </div>
+                        <Badge className="bg-white dark:bg-black text-xs font-mono tracking-widest text-indigo-500 border-indigo-200 dark:border-indigo-800">React Digital Form Preview</Badge>
                     </div>
-                    <CardHeader className="border-b border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-900/50">
-                        <CardTitle className="text-lg flex items-center gap-2 font-mono">
-                            <Sparkles className="w-5 h-5 text-indigo-500" />
-                            React Digital Form Preview
-                        </CardTitle>
-                    </CardHeader>
-                    <CardContent className="pt-8 flex-1 overflow-auto">
+                    <CardContent className="p-8 md:p-12 flex-1 overflow-auto">
                         {uploadState === 'idle' && (
                             <div className="flex items-center justify-center h-full text-slate-400 italic">Waiting for form input...</div>
                         )}
@@ -206,12 +205,18 @@ export default function UploadPage() {
                                         </div>
                                     ))}
                                 </div>
+
+                                {uploadState === 'done' && (
+                                    <Button className="w-full h-14 text-lg mt-8 disabled:opacity-50 tracking-wide font-semibold rounded-2xl shrink-0" disabled>Submit Form</Button>
+                                )}
                             </motion.div>
                         )}
                     </CardContent>
                     {uploadState === 'done' && (
-                        <div className="absolute bottom-6 right-6 z-10">
-                            <Button className="bg-indigo-600 hover:bg-indigo-700 text-white shadow-lg">Deploy Form to Production</Button>
+                        <div className="p-8 bg-slate-50 dark:bg-slate-900/50 border-t border-slate-200 dark:border-slate-800 text-center shrink-0">
+                            <h4 className="font-semibold text-slate-800 dark:text-slate-200 mb-2">Want to customize this further or add strict data protection?</h4>
+                            <p className="text-sm text-slate-500 mb-6">Create a free account to enable Field Mapping, AES-256 Encryption, and File Uploads.</p>
+                            <Button className="w-full h-12 bg-indigo-600 hover:bg-indigo-700 text-white shadow-lg">Sign Up to Deploy Form</Button>
                         </div>
                     )}
                 </Card>
