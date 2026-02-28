@@ -263,10 +263,6 @@ export default function DemoPage() {
                                 <p className="text-slate-600 dark:text-slate-400 mt-2">Here is your functional digital schema and security configuration.</p>
                             </div>
                             <div className="flex gap-2 shrink-0 w-full md:w-auto">
-                                <Button variant="outline" onClick={() => setStep('chat')} disabled={iterationCount >= 3}>
-                                    <MessageSquare className="w-4 h-4 mr-2" />
-                                    Refine with AI ({3 - iterationCount} left)
-                                </Button>
                                 <Button variant="outline" onClick={() => { setStep('method'); setIterationCount(0); setChatMessages([]); setGeneratedFields([]); }}><RefreshCcw className="w-4 h-4 mr-2" /> Start Over</Button>
                             </div>
                         </div>
@@ -322,7 +318,15 @@ export default function DemoPage() {
                                 <div className="p-8 bg-slate-50 dark:bg-slate-900/50 border-t border-slate-200 dark:border-slate-800 text-center">
                                     <h4 className="font-semibold text-slate-800 dark:text-slate-200 mb-2">Want to customize this further or add strict data protection?</h4>
                                     <p className="text-sm text-slate-500 mb-6">Create a free account to enable Field Mapping, AES-256 Encryption, and File Uploads.</p>
-                                    <Button variant="outline" className="w-full bg-white dark:bg-transparent h-12">Sign Up to Deploy Form</Button>
+                                    <div className="flex flex-col sm:flex-row gap-3">
+                                        <Button variant="outline" className="w-full bg-white dark:bg-slate-900 border-slate-300 dark:border-slate-700 h-12" onClick={() => setStep('chat')} disabled={iterationCount >= 3}>
+                                            <MessageSquare className="w-4 h-4 mr-2" />
+                                            Continue Refining ({3 - iterationCount} left)
+                                        </Button>
+                                        <Button variant="primary" className="w-full h-12 shadow-md hover:shadow-lg transition-shadow bg-indigo-600 hover:bg-indigo-700 text-white">
+                                            Sign Up to Deploy Form
+                                        </Button>
+                                    </div>
                                 </div>
                             </Card>
                         </div>
