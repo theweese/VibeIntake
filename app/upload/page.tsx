@@ -376,18 +376,25 @@ export default function UploadPage() {
                                 {uploadState === 'done' && (
                                     <div className="bg-slate-50 dark:bg-slate-900/50 border-t border-slate-200 dark:border-slate-800 text-center shrink-0">
                                         {!isVerifying ? (
-                                            <div className="p-8 w-full max-w-2xl mx-auto space-y-4 flex flex-col items-center">
-                                                <h4 className="font-semibold flex items-center justify-center gap-2 text-slate-800 dark:text-slate-200">
-                                                    <Bot className="w-5 h-5 text-indigo-500" /> Refine with AI Assistant
-                                                </h4>
-                                                <p className="text-sm text-center text-slate-500">Need to modify this form? Tell the AI what needs changing.</p>
-                                                <form onSubmit={handleChatSubmit} className="flex gap-2 w-full mt-2">
-                                                    <Input className="flex-1 bg-white dark:bg-slate-950 shadow-sm" placeholder="e.g., Add an emergency contact field..." value={chatInput} onChange={e => setChatInput(e.target.value)} />
-                                                    <Button size="sm" type="submit" disabled={!chatInput.trim()} className="h-10 px-6 bg-indigo-600 hover:bg-indigo-700 text-white">Send</Button>
-                                                </form>
-                                                {iterationCount > 0 && (
-                                                    <p className="text-[10px] text-center opacity-50 uppercase tracking-widest mt-2">Demo limit: {2 - iterationCount} changes remaining.</p>
-                                                )}
+                                            <div className="grid grid-cols-1 md:grid-cols-2 divide-y md:divide-y-0 md:divide-x divide-slate-200 dark:divide-slate-800">
+                                                <div className="p-8 w-full mx-auto space-y-4 flex flex-col items-center justify-center">
+                                                    <h4 className="font-semibold text-slate-800 dark:text-slate-200 mb-2">Want to customize this further or add strict data protection?</h4>
+                                                    <p className="text-sm text-slate-500 mb-6 px-4">Create a free account to enable Field Mapping, AES-256 Encryption, and File Uploads.</p>
+                                                    <Button onClick={() => window.location.href = '/signup'} className="w-full max-w-xs h-12 bg-slate-800 hover:bg-slate-900 text-white dark:bg-slate-100 dark:hover:bg-white dark:text-slate-900 shadow-lg">Sign Up to Deploy Form</Button>
+                                                </div>
+                                                <div className="p-8 w-full mx-auto space-y-4 flex flex-col items-center justify-center">
+                                                    <h4 className="font-semibold flex items-center justify-center gap-2 text-slate-800 dark:text-slate-200">
+                                                        <Bot className="w-5 h-5 text-indigo-500" /> Refine with AI Assistant
+                                                    </h4>
+                                                    <p className="text-sm text-center text-slate-500">Need to modify this form? Tell the AI what needs changing.</p>
+                                                    <form onSubmit={handleChatSubmit} className="flex gap-2 w-full mt-2 max-w-sm">
+                                                        <Input className="flex-1 bg-white dark:bg-slate-950 shadow-sm" placeholder="e.g., Add an emergency contact field..." value={chatInput} onChange={e => setChatInput(e.target.value)} />
+                                                        <Button size="sm" type="submit" disabled={!chatInput.trim()} className="h-10 px-6 bg-indigo-600 hover:bg-indigo-700 text-white shadow-sm">Send</Button>
+                                                    </form>
+                                                    {iterationCount > 0 && (
+                                                        <p className="text-[10px] text-center opacity-50 uppercase tracking-widest mt-2">Demo limit: {2 - iterationCount} changes remaining.</p>
+                                                    )}
+                                                </div>
                                             </div>
                                         ) : (
                                             <div className="p-8 w-full max-w-sm mx-auto space-y-4 text-center">
