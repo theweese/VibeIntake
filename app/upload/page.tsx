@@ -60,7 +60,7 @@ export default function UploadPage() {
                                             <UploadCloud className="w-8 h-8 text-indigo-500" />
                                         </div>
                                         <h4 className="font-semibold text-slate-900 dark:text-slate-100 mb-1">Upload Scanned Form</h4>
-                                        <p className="text-xs text-slate-500">JPG, PNG, PDF (Max 10MB)</p>
+                                        <p className="text-xs text-slate-500">JPG, PNG, PDF, or DOCX (Max 10MB)</p>
                                     </div>
                                 )}
                                 {uploadState === 'scanning' && (
@@ -94,7 +94,7 @@ export default function UploadPage() {
                             className="hidden"
                             ref={fileInputRef}
                             onChange={handleFileChange}
-                            accept="image/*,.pdf"
+                            accept="image/*,.pdf,.doc,.docx"
                         />
 
                     </CardContent>
