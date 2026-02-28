@@ -301,9 +301,11 @@ export default function MarketingHome() {
                                 View Pricing Plans
                             </Button>
                         </Link>
-                        <Button variant="outline" size="lg" className="rounded-full px-8 h-12 text-base w-full sm:w-auto border-slate-700 text-slate-300 hover:bg-slate-800 hover:text-white dark:border-slate-700 dark:text-slate-300 dark:hover:bg-slate-800 items-center justify-center">
-                            Contact Sales
-                        </Button>
+                        <Link href="/contact" className="inline-block">
+                            <Button variant="outline" size="lg" className="rounded-full px-8 h-12 text-base w-full sm:w-auto border-slate-700 text-slate-300 hover:bg-slate-800 hover:text-white dark:border-slate-700 dark:text-slate-300 dark:hover:bg-slate-800 items-center justify-center">
+                                Contact Sales
+                            </Button>
+                        </Link>
                     </div>
 
                     <div className="grid grid-cols-2 md:grid-cols-4 gap-8 border-t border-slate-800/60 pt-10 text-sm text-slate-500 text-left">

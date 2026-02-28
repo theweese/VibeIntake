@@ -37,8 +37,10 @@ export default function ContactPage() {
     return (
         <div className="max-w-3xl mx-auto py-16 px-4 animate-in fade-in duration-500">
             <div className="text-center mb-12">
-                <h1 className="text-4xl md:text-5xl font-black text-slate-900 dark:text-white tracking-tight mb-4">Schedule a Meeting</h1>
-                <p className="text-lg text-slate-600 dark:text-slate-400">Tell us a little bit about your intake needs and we'll reach out to schedule a demo.</p>
+                <h1 className="text-4xl md:text-5xl font-black text-slate-900 dark:text-white tracking-tight mb-4">Get a Custom Quote</h1>
+                <p className="text-lg text-slate-600 dark:text-slate-400 max-w-2xl mx-auto">
+                    We assist with making web forms to replace your paper forms. For businesses, we can assist with importing large data sets. Tell us about your needs and we'll give you a quote based on the amount of AI tokens required.
+                </p>
             </div>
 
             <Card className="shadow-2xl border-slate-200 dark:border-slate-800 bg-white/80 dark:bg-slate-950/80 backdrop-blur-sm rounded-[2rem] overflow-hidden">
@@ -115,7 +117,7 @@ export default function ContactPage() {
                                         value={formData.notes}
                                         onChange={handleChange}
                                         className="w-full min-h-[120px] rounded-2xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 p-4 outline-none focus:ring-2 focus:ring-indigo-500 resize-none"
-                                        placeholder="I'm interested in deploying secure intake forms for my new clinic..."
+                                        placeholder="We have thousands of handwritten forms that need digitized. How much would it cost to process these?"
                                         required
                                     />
                                 </div>
@@ -140,9 +142,9 @@ export default function ContactPage() {
                                     <CheckCircle2 className="w-10 h-10 text-green-600 dark:text-green-400" />
                                 </div>
                                 <div>
-                                    <h3 className="text-2xl font-bold text-slate-900 dark:text-white mb-2">Request Received!</h3>
+                                    <h3 className="text-2xl font-bold text-slate-900 dark:text-white mb-2">Quote Request Received!</h3>
                                     <p className="text-slate-600 dark:text-slate-400 max-w-md mx-auto">
-                                        Thank you, {formData.firstName}. We've received your notes and will reach out to <strong>{formData.email}</strong> shortly to schedule a meeting.
+                                        Thank you, {formData.firstName}. We'll review your dataset volume and email you a custom quote at <strong>{formData.email}</strong> shortly.
                                     </p>
                                 </div>
                                 <Button variant="outline" onClick={() => window.location.href = '/'} className="mt-4">
