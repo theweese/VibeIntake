@@ -376,24 +376,31 @@ export default function UploadPage() {
                                 {uploadState === 'done' && (
                                     <div className="bg-slate-50 dark:bg-slate-900/50 border-t border-slate-200 dark:border-slate-800 text-center shrink-0">
                                         {!isVerifying ? (
-                                            <div className="flex flex-col divide-y divide-slate-200 dark:divide-slate-800">
-                                                <div className="p-8 w-full mx-auto space-y-4 flex flex-col items-center justify-center bg-white/50 dark:bg-slate-950/20">
-                                                    <h4 className="font-semibold flex items-center justify-center gap-2 text-slate-800 dark:text-slate-200">
-                                                        <Bot className="w-5 h-5 text-indigo-500" /> Refine with AI Assistant
+                                            <div className="flex flex-col">
+                                                <div className="p-10 md:p-12 w-full mx-auto space-y-4 flex flex-col items-center justify-center bg-indigo-50/40 dark:bg-indigo-950/20 relative overflow-hidden border-t-2 border-indigo-100 dark:border-indigo-900">
+                                                    <div className="absolute inset-0 bg-gradient-to-br from-indigo-500/5 via-fuchsia-500/5 to-transparent pointer-events-none" />
+                                                    <h4 className="font-bold flex items-center justify-center gap-2 text-indigo-900 dark:text-indigo-200 text-xl relative">
+                                                        <Bot className="w-6 h-6 text-indigo-600 dark:text-indigo-400" /> Refine with AI Assistant
                                                     </h4>
-                                                    <p className="text-sm text-center text-slate-500">Need to modify this form? Tell the AI what needs changing.</p>
-                                                    <form onSubmit={handleChatSubmit} className="flex gap-2 w-full mt-2 max-w-sm">
-                                                        <Input className="flex-1 bg-white dark:bg-slate-950 shadow-sm" placeholder="e.g., Add an emergency contact field..." value={chatInput} onChange={e => setChatInput(e.target.value)} />
-                                                        <Button size="sm" type="submit" disabled={!chatInput.trim()} className="h-10 px-6 bg-indigo-600 hover:bg-indigo-700 text-white shadow-sm">Send</Button>
+                                                    <p className="text-base text-center text-indigo-700/70 dark:text-indigo-300/70 relative font-medium">Need to modify this form? Tell the AI what needs changing.</p>
+                                                    <form onSubmit={handleChatSubmit} className="flex gap-2 w-full mt-4 max-w-md relative">
+                                                        <Input className="flex-1 bg-white/90 dark:bg-slate-950/90 backdrop-blur-sm shadow-sm border-indigo-200 dark:border-indigo-800" placeholder="e.g., Add an emergency contact field..." value={chatInput} onChange={e => setChatInput(e.target.value)} />
+                                                        <Button size="sm" type="submit" disabled={!chatInput.trim()} className="h-10 px-8 bg-indigo-600 hover:bg-indigo-700 text-white shadow-md font-medium group transition-all">
+                                                            Send <Sparkles className="w-4 h-4 ml-2 opacity-70 group-hover:opacity-100 transition-opacity" />
+                                                        </Button>
                                                     </form>
                                                     {iterationCount > 0 && (
-                                                        <p className="text-[10px] text-center opacity-50 uppercase tracking-widest mt-2">Demo limit: {2 - iterationCount} changes remaining.</p>
+                                                        <p className="text-[10px] text-center opacity-60 uppercase tracking-widest mt-2 font-semibold text-indigo-600 dark:text-indigo-400 relative">Demo limit: {2 - iterationCount} changes remaining.</p>
                                                     )}
                                                 </div>
-                                                <div className="p-8 w-full mx-auto space-y-4 flex flex-col items-center justify-center bg-slate-100/50 dark:bg-slate-900/50">
-                                                    <h4 className="font-semibold text-slate-800 dark:text-slate-200 mb-2">Want to customize this further or add strict data protection?</h4>
-                                                    <p className="text-sm text-slate-500 mb-4 px-4 max-w-md">Create a free account to enable Field Mapping, AES-256 Encryption, and File Uploads.</p>
-                                                    <Button onClick={() => window.location.href = '/signup'} className="w-full max-w-xs h-12 bg-slate-800 hover:bg-slate-900 text-white dark:bg-slate-100 dark:hover:bg-white dark:text-slate-900 shadow-lg">Sign Up to Deploy Form</Button>
+                                                <div className="p-10 md:p-14 w-full mx-auto space-y-5 flex flex-col items-center justify-center bg-slate-900 dark:bg-black relative overflow-hidden">
+                                                    <div className="absolute inset-0 bg-gradient-to-tr from-indigo-500/20 via-purple-500/10 to-transparent pointer-events-none" />
+                                                    <div className="absolute -top-32 -right-32 p-8 opacity-20 blur-3xl rounded-full bg-indigo-500 w-96 h-96 pointer-events-none" />
+                                                    <h4 className="font-extrabold text-white text-2xl md:text-3xl text-center relative tracking-tight">Ready to deploy this form?</h4>
+                                                    <p className="text-base md:text-lg text-center text-slate-300 px-4 max-w-xl relative">Create a free account to enable Field Mapping, AES-256 Encryption, and File Uploads.</p>
+                                                    <Button onClick={() => window.location.href = '/signup'} className="w-full max-w-sm h-14 bg-white hover:bg-slate-100 text-indigo-950 shadow-2xl font-bold text-lg rounded-2xl relative group overflow-hidden mt-6 transition-all hover:scale-[1.02]">
+                                                        <span className="relative z-10 flex items-center justify-center">Sign Up to Deploy <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" /></span>
+                                                    </Button>
                                                 </div>
                                             </div>
                                         ) : (
