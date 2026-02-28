@@ -21,7 +21,25 @@ export default function UploadPage() {
             const lowerName = rawName.toLowerCase()
             let newFields: { label: string, type: string }[] = []
 
-            if (lowerName.includes('sole') || lowerName.includes('shoe') || lowerName.includes('christ')) {
+            if (lowerName.includes('afl') || lowerName.includes('cio') || lowerName.includes('community') || lowerName.includes('service')) {
+                newFields = [
+                    { label: 'Assistance Type Requested', type: 'select' },
+                    { label: 'Head of Household Full Name', type: 'text' },
+                    { label: 'Date of Birth (Head of Household)', type: 'text' },
+                    { label: 'Current Address (City, State, Zip, County)', type: 'textarea' },
+                    { label: 'Phone Number', type: 'tel' },
+                    { label: 'Social Security Number (Head of Household)', type: 'sensitive_id' },
+                    { label: 'Total Household Size', type: 'number' },
+                    { label: 'Marital Status', type: 'select' },
+                    { label: 'Race & Ethnicity', type: 'select' },
+                    { label: 'Total Annual Income Bracket', type: 'select' },
+                    { label: 'Dependent 1: Full Name & Relation', type: 'text' },
+                    { label: 'Dependent 1: Social Security Number', type: 'sensitive_id' },
+                    { label: 'Dependent 2: Full Name & Relation', type: 'text' },
+                    { label: 'Dependent 2: Social Security Number', type: 'sensitive_id' },
+                    { label: '+ Add Additional Dependent / Participant', type: 'dynamic_button' },
+                ]
+            } else if (lowerName.includes('sole') || lowerName.includes('shoe') || lowerName.includes('christ')) {
                 newFields = [
                     { label: 'Parent / Guardian Name', type: 'text' },
                     { label: 'Date', type: 'text' },
@@ -199,6 +217,12 @@ export default function UploadPage() {
                                                 </div>
                                             ) : field.type === 'select' ? (
                                                 <Input label={field.label} placeholder="Select an option..." />
+                                            ) : field.type === 'dynamic_button' ? (
+                                                <div className="pt-2">
+                                                    <Button type="button" variant="outline" className="w-full border-dashed border-2 bg-transparent hover:bg-slate-50 dark:hover:bg-slate-800 border-slate-300 dark:border-slate-700 text-slate-600 dark:text-slate-400 h-12">
+                                                        {field.label}
+                                                    </Button>
+                                                </div>
                                             ) : (
                                                 <Input label={field.label} type={field.type} placeholder="..." />
                                             )}
