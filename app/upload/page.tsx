@@ -1,12 +1,19 @@
 "use client"
 
-import { useState } from 'react'
+import { useState, useRef } from 'react'
 import { Card, CardHeader, CardTitle, CardContent, Button, PageHeader, Badge } from '@/components/ui'
 import { UploadCloud, CheckCircle2, FileJson, Sparkles, Loader2, FileScan } from 'lucide-react'
 import { motion } from 'framer-motion'
 
 export default function UploadPage() {
     const [uploadState, setUploadState] = useState<'idle' | 'scanning' | 'morphing' | 'done'>('idle')
+    const fileInputRef = useRef<HTMLInputElement>(null)
+
+    const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        if (e.target.files && e.target.files.length > 0) {
+            handleSimulateScan()
+        }
+    }
 
     const handleSimulateScan = () => {
         setUploadState('scanning')
@@ -39,7 +46,7 @@ export default function UploadPage() {
                     <CardContent className="pt-6 flex-1 flex flex-col justify-center">
 
                         <div
-                            onClick={uploadState === 'idle' ? handleSimulateScan : undefined}
+                            onClick={() => uploadState === 'idle' && fileInputRef.current?.click()}
                             className={`border-2 border-dashed rounded-2xl p-8 flex flex-col items-center justify-center transition-all cursor-pointer h-64
                 ${uploadState === 'idle'
                                     ? 'border-indigo-300 dark:border-indigo-800 bg-indigo-50/50 dark:bg-indigo-900/10 hover:bg-indigo-100/50 dark:hover:bg-indigo-900/20'
@@ -82,6 +89,14 @@ export default function UploadPage() {
                             </motion.div>
                         </div>
 
+                        <input
+                            type="file"
+                            className="hidden"
+                            ref={fileInputRef}
+                            onChange={handleFileChange}
+                            accept="image/*,.pdf"
+                        />
+
                     </CardContent>
                 </Card>
 
@@ -120,7 +135,7 @@ export default function UploadPage() {
                                 <p className="pl-8">{"{"}</p>
                                 <p className="pl-12">"label": <span className="text-green-400">"Social Security Number"</span>,</p>
                                 <p className="pl-12">"type": <span className="text-green-400">"sensitive_id"</span>,</p>
-                                <motion.p initial={{ backgroundColor: 'transparent' }} animate={{ backgroundColor: 'rgba(239, 68, 68, 0.2)' }} className="pl-12 text-rose-400 font-bold tracking-wide">
+                                <motion.p initial={{ backgroundColor: 'rgba(239, 68, 68, 0)' }} animate={{ backgroundColor: 'rgba(239, 68, 68, 0.2)' }} className="pl-12 text-rose-400 font-bold tracking-wide">
                                     "is_sensitive": true,
                                 </motion.p>
                                 <p className="pl-12">"mask_pattern": <span className="text-green-400">"***-**-####"</span></p>
