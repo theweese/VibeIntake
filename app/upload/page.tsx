@@ -20,6 +20,33 @@ export default function UploadPage() {
     const [captchaTarget, setCaptchaTarget] = useState('V1B3')
     const [iterationCount, setIterationCount] = useState(0)
 
+    // Auto-Deploy State
+    const [deploySlug, setDeploySlug] = useState('')
+    const [isDeploying, setIsDeploying] = useState(false)
+
+    const handleDeployTenant = async () => {
+        if (!deploySlug.trim()) return
+        setIsDeploying(true)
+        try {
+            const res = await fetch('/api/deploy-tenant', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ subdomain: deploySlug.trim() })
+            })
+            const data = await res.json()
+            if (data.success || data.domain) {
+                // Instant mic drop demo link!
+                window.location.href = `https://${data.domain}/dashboard`
+            } else {
+                alert('Domain deploy failed: ' + (data.error || 'Unknown error'))
+            }
+        } catch (e: any) {
+            alert('Encountered error configuring Vercel domain.')
+        } finally {
+            setIsDeploying(false)
+        }
+    }
+
     const generateCaptcha = () => {
         const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789'
         let result = ''
@@ -397,10 +424,25 @@ export default function UploadPage() {
                                                     <div className="absolute inset-0 bg-gradient-to-tr from-indigo-500/20 via-purple-500/10 to-transparent pointer-events-none" />
                                                     <div className="absolute -top-32 -right-32 p-8 opacity-20 blur-3xl rounded-full bg-indigo-500 w-96 h-96 pointer-events-none" />
                                                     <h4 className="font-extrabold text-white text-2xl md:text-3xl text-center relative tracking-tight">Ready to deploy this form?</h4>
-                                                    <p className="text-base md:text-lg text-center text-slate-300 px-4 max-w-xl relative">Create a free account to enable Field Mapping, AES-256 Encryption, and File Uploads.</p>
-                                                    <Button onClick={() => window.location.href = '/signup'} className="w-full max-w-sm h-14 bg-white hover:bg-slate-100 text-indigo-950 shadow-2xl font-bold text-lg rounded-2xl relative group overflow-hidden mt-6 transition-all hover:scale-[1.02]">
-                                                        <span className="relative z-10 flex items-center justify-center">Sign Up to Deploy <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" /></span>
-                                                    </Button>
+                                                    <p className="text-base md:text-lg text-center text-slate-300 px-4 max-w-xl relative">Claim your custom subdomain and launch instantly.</p>
+                                                    <div className="w-full max-w-md mt-6 relative z-10">
+                                                        <div className="flex bg-white rounded-2xl p-1.5 shadow-2xl focus-within:ring-4 focus-within:ring-indigo-500/20 transition-all">
+                                                            <div className="flex items-center flex-1 px-3 bg-white border-r border-slate-100 min-w-0">
+                                                                <input
+                                                                    value={deploySlug}
+                                                                    onChange={e => setDeploySlug(e.target.value.toLowerCase().replace(/[^a-z0-9-]/g, ''))}
+                                                                    onKeyDown={e => e.key === 'Enter' && handleDeployTenant()}
+                                                                    disabled={isDeploying}
+                                                                    className="w-full h-12 text-slate-900 placeholder:text-slate-400 focus:outline-none bg-transparent font-medium"
+                                                                    placeholder="your-company"
+                                                                />
+                                                                <span className="text-slate-400 font-medium whitespace-nowrap hidden sm:block">.vibeintake.com</span>
+                                                            </div>
+                                                            <Button onClick={handleDeployTenant} disabled={!deploySlug.trim() || isDeploying} className="h-12 px-6 bg-indigo-600 hover:bg-indigo-700 disabled:opacity-70 disabled:bg-indigo-600 text-white shadow-md font-bold text-base rounded-xl">
+                                                                {isDeploying ? <Loader2 className="w-5 h-5 animate-spin mx-4" /> : 'Deploy'}
+                                                            </Button>
+                                                        </div>
+                                                    </div>
                                                 </div>
                                             </div>
                                         ) : (
