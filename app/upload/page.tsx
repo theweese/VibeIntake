@@ -165,7 +165,7 @@ export default function UploadPage() {
                                         </div>
                                     )}
                                     {(uploadState === 'morphing' || uploadState === 'done') && (
-                                        <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }} className="space-y-6">
+                                        <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }} className="space-y-4">
 
                                             <div className="flex justify-between items-start mb-6 border-b border-slate-200 dark:border-slate-800 pb-2">
                                                 <h2 className="text-2xl font-bold text-slate-800 dark:text-slate-100">
@@ -180,7 +180,7 @@ export default function UploadPage() {
 
                                             {/* FALLBACK DEMO FORM */}
                                             {detectedForm === 'basic' && (
-                                                <div className="space-y-6">
+                                                <div className="space-y-4">
                                                     <div className="bg-indigo-50 dark:bg-indigo-900/20 border border-indigo-200 dark:border-indigo-800 rounded-2xl p-6 mb-8 mt-2 flex flex-col md:flex-row gap-4 items-start md:items-center">
                                                         <div className="bg-indigo-100 dark:bg-indigo-800 p-3 rounded-full shrink-0">
                                                             <Sparkles className="w-6 h-6 text-indigo-600 dark:text-indigo-400" />
@@ -195,7 +195,7 @@ export default function UploadPage() {
                                                             Refine via Chat AI
                                                         </Button>
                                                     </div>
-                                                    <div className="grid grid-cols-2 gap-6">
+                                                    <div className="grid grid-cols-2 gap-4">
                                                         <Input density="compact" label="First Name" placeholder="Jane" />
                                                         <Input density="compact" label="Last Name" placeholder="Doe" />
                                                     </div>
@@ -208,7 +208,7 @@ export default function UploadPage() {
 
                                             {/* AFL-CIO COMPLEX DEMO FORM */}
                                             {detectedForm === 'afl-cio' && (
-                                                <div className="space-y-6">
+                                                <div className="space-y-4">
                                                     <div className="grid grid-cols-2 gap-4">
                                                         <Input density="compact" label="Participant's Name" placeholder="Full name..." />
                                                         <Input density="compact" label="Date of Birth" placeholder="MM/DD/YYYY" type="date" />
@@ -270,7 +270,7 @@ export default function UploadPage() {
 
                                             {/* SOLES FOR CHRIST / REGISTRATION COMPLEX DEMO FORM */}
                                             {detectedForm === 'soles-for-christ' && (
-                                                <div className="space-y-6">
+                                                <div className="space-y-4">
                                                     <div className="grid grid-cols-2 gap-4">
                                                         <Input density="compact" label="Parent / Guardian Name" placeholder="Full name..." />
                                                         <Input density="compact" label="Date" placeholder="MM/DD/YYYY" type="date" />
