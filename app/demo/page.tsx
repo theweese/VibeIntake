@@ -113,7 +113,7 @@ export default function DemoPage() {
                 {/* STEP 1: METHOD SELECTION */}
                 {step === 'method' && (
                     <motion.div key="method" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }} className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto">
-                        <Card className="bg-white dark:bg-slate-800 border-slate-200 dark:border-slate-700 shadow-xl hover:shadow-2xl hover:border-indigo-500/50 cursor-pointer transition-all group flex flex-col h-full rounded-[2rem]">
+                        <Card className="bg-white dark:bg-slate-800 border-slate-200 dark:border-slate-700 shadow-xl hover:shadow-2xl hover:border-indigo-500/50 cursor-pointer transition-all group flex flex-col h-full rounded-[2rem]" onClick={() => window.location.href = '/upload'}>
                             <CardContent className="p-10 pt-12 text-center flex flex-col items-center flex-1 justify-center">
                                 <div className="w-14 h-14 bg-indigo-100 dark:bg-indigo-900/50 rounded-2xl flex items-center justify-center mb-8 text-indigo-600 dark:text-indigo-400 group-hover:bg-indigo-600 group-hover:text-white dark:group-hover:bg-indigo-500 transition-colors shadow-sm">
                                     <FileScan className="w-7 h-7" />
