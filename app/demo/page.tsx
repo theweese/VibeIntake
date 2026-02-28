@@ -238,6 +238,7 @@ export default function DemoPage() {
                                             placeholder="Type the characters above"
                                             value={captchaKey}
                                             onChange={(e) => setCaptchaKey(e.target.value)}
+                                            onKeyDown={(e) => e.key === 'Enter' && handleCaptchaVerify()}
                                         />
                                         <Button className="w-full" onClick={handleCaptchaVerify}>Verify & Continue</Button>
                                     </div>
