@@ -7,10 +7,14 @@ import { motion } from 'framer-motion'
 
 export default function UploadPage() {
     const [uploadState, setUploadState] = useState<'idle' | 'scanning' | 'morphing' | 'done'>('idle')
+    const [fileName, setFileName] = useState('')
     const fileInputRef = useRef<HTMLInputElement>(null)
 
     const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         if (e.target.files && e.target.files.length > 0) {
+            const rawName = e.target.files[0].name
+            // Strip the extension for a cleaner form title
+            setFileName(rawName.replace(/\.[^/.]+$/, ""))
             handleSimulateScan()
         }
     }
@@ -126,7 +130,7 @@ export default function UploadPage() {
                         {(uploadState === 'morphing' || uploadState === 'done') && (
                             <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }} className="space-y-1.5 text-slate-300">
                                 <p>{"{"}</p>
-                                <p className="pl-4">"form_title": <span className="text-green-400">"Patient Intake 2026"</span>,</p>
+                                <p className="pl-4">"form_title": <span className="text-green-400">"{fileName || 'Patient Intake 2026'}"</span>,</p>
                                 <p className="pl-4">"fields": [</p>
                                 <p className="pl-8">{"{"}</p>
                                 <p className="pl-12">"label": <span className="text-green-400">"Full Name"</span>,</p>
