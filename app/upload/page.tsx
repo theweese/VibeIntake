@@ -1,7 +1,7 @@
 "use client"
 
 import { useState, useRef } from 'react'
-import { Card, CardHeader, CardTitle, CardContent, Button, PageHeader, Badge } from '@/components/ui'
+import { Card, CardHeader, CardTitle, CardContent, Button, PageHeader, Badge, Input } from '@/components/ui'
 import { UploadCloud, CheckCircle2, FileJson, Sparkles, Loader2, FileScan } from 'lucide-react'
 import { motion } from 'framer-motion'
 
@@ -105,53 +105,68 @@ export default function UploadPage() {
                 </Card>
 
                 {/* Right Side: Morph Output */}
-                <Card className="flex flex-col bg-slate-900 dark:bg-black text-slate-300 border-none shadow-2xl relative overflow-hidden">
+                <Card className="flex flex-col bg-white dark:bg-slate-950 text-slate-900 dark:text-slate-100 border-none shadow-2xl relative overflow-hidden">
                     <div className="absolute top-0 right-0 p-4">
-                        <Badge variant="outline" className="text-[10px] border-slate-700 font-mono tracking-widest text-indigo-400">AI OUTPUT</Badge>
+                        <Badge variant="outline" className="text-[10px] bg-white dark:bg-black font-mono tracking-widest text-indigo-500 border-indigo-200 dark:border-indigo-800">AI COMPILED</Badge>
                     </div>
-                    <CardHeader className="border-b border-slate-800">
-                        <CardTitle className="text-lg flex items-center gap-2 text-white font-mono">
-                            <FileJson className="w-5 h-5 text-indigo-400" />
-                            schema.json
+                    <CardHeader className="border-b border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-900/50">
+                        <CardTitle className="text-lg flex items-center gap-2 font-mono">
+                            <Sparkles className="w-5 h-5 text-indigo-500" />
+                            React Digital Form Preview
                         </CardTitle>
                     </CardHeader>
-                    <CardContent className="pt-6 font-mono text-sm flex-1 overflow-auto">
+                    <CardContent className="pt-8 flex-1 overflow-auto">
                         {uploadState === 'idle' && (
-                            <p className="text-slate-600 italic">Waiting for form input...</p>
+                            <div className="flex items-center justify-center h-full text-slate-400 italic">Waiting for form input...</div>
                         )}
                         {uploadState === 'scanning' && (
-                            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-2">
-                                <p className="text-indigo-400">{"{"}</p>
-                                <p className="pl-4">"status": "analyzing_pixels",</p>
-                                <p className="pl-4 text-slate-500">...</p>
-                                <p className="text-indigo-400">{"}"}</p>
+                            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-6">
+                                <div className="h-8 w-1/2 bg-slate-200 dark:bg-slate-800 rounded animate-pulse"></div>
+                                <div className="space-y-4">
+                                    <div className="h-12 w-full bg-slate-100 dark:bg-slate-900 rounded-xl animate-pulse"></div>
+                                    <div className="h-12 w-full bg-slate-100 dark:bg-slate-900 rounded-xl animate-pulse"></div>
+                                    <div className="h-12 w-full bg-slate-100 dark:bg-slate-900 rounded-xl animate-pulse"></div>
+                                </div>
                             </motion.div>
                         )}
                         {(uploadState === 'morphing' || uploadState === 'done') && (
-                            <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }} className="space-y-1.5 text-slate-300">
-                                <p>{"{"}</p>
-                                <p className="pl-4">"form_title": <span className="text-green-400">"{fileName || 'Patient Intake 2026'}"</span>,</p>
-                                <p className="pl-4">"fields": [</p>
-                                <p className="pl-8">{"{"}</p>
-                                <p className="pl-12">"label": <span className="text-green-400">"Full Name"</span>,</p>
-                                <p className="pl-12">"type": <span className="text-green-400">"text"</span></p>
-                                <p className="pl-8">{"},"}</p>
-                                <p className="pl-8">{"{"}</p>
-                                <p className="pl-12">"label": <span className="text-green-400">"Social Security Number"</span>,</p>
-                                <p className="pl-12">"type": <span className="text-green-400">"sensitive_id"</span>,</p>
-                                <motion.p initial={{ backgroundColor: 'rgba(239, 68, 68, 0)' }} animate={{ backgroundColor: 'rgba(239, 68, 68, 0.2)' }} className="pl-12 text-rose-400 font-bold tracking-wide">
-                                    "is_sensitive": true,
-                                </motion.p>
-                                <p className="pl-12">"mask_pattern": <span className="text-green-400">"***-**-####"</span></p>
-                                <p className="pl-8">{"}"}</p>
-                                <p className="pl-4">]</p>
-                                <p>{"}"}</p>
+                            <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }} className="space-y-6">
+                                <h2 className="text-2xl font-bold border-b border-slate-200 dark:border-slate-800 pb-2 mb-6">
+                                    {fileName || 'Patient Intake 2026'}
+                                </h2>
+
+                                <div className="space-y-6">
+                                    <div className="grid grid-cols-2 gap-6">
+                                        <Input label="First Name" placeholder="Jane" />
+                                        <Input label="Last Name" placeholder="Doe" />
+                                    </div>
+
+                                    <Input label="Email Address" placeholder="jane.doe@example.com" type="email" />
+                                    <Input label="Phone Number" placeholder="(555) 000-0000" type="tel" />
+
+                                    {/* Dynamically highlight the PII safety shield mock block */}
+                                    <motion.div
+                                        initial={{ borderColor: 'transparent', backgroundColor: 'transparent' }}
+                                        animate={{ borderColor: 'rgba(239, 68, 68, 0.5)', backgroundColor: 'rgba(239, 68, 68, 0.05)' }}
+                                        className="p-4 rounded-xl border-2 relative"
+                                    >
+                                        <div className="absolute -top-3 right-4 bg-rose-500 text-white text-[10px] font-bold px-2 py-0.5 rounded-full tracking-wider uppercase">
+                                            PII Shield Active
+                                        </div>
+                                        <Input label="Social Security Number" type="password" placeholder="***-**-####" />
+                                    </motion.div>
+
+                                    <div>
+                                        <label className="text-sm font-medium text-slate-700 dark:text-slate-300 flex items-center gap-2 mb-1.5 ml-1">Comments or Notes</label>
+                                        <textarea className="w-full min-h-[100px] rounded-2xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 p-4 outline-none focus:ring-2 focus:ring-indigo-500 resize-none" placeholder="Type here..."></textarea>
+                                    </div>
+                                </div>
                             </motion.div>
                         )}
                     </CardContent>
                     {uploadState === 'done' && (
-                        <div className="absolute bottom-6 right-6">
-                            <Button className="bg-white text-slate-900 hover:bg-slate-200">Deploy Form</Button>
+                        <div className="absolute bottom-6 right-6 z-10">
+                            <Button className="bg-indigo-600 hover:bg-indigo-700 text-white shadow-lg">Deploy Form to Production</Button>
                         </div>
                     )}
                 </Card>
