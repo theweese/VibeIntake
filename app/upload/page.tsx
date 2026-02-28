@@ -2,88 +2,31 @@
 
 import { useState, useRef } from 'react'
 import { Card, CardHeader, CardTitle, CardContent, Button, PageHeader, Badge, Input } from '@/components/ui'
-import { UploadCloud, CheckCircle2, FileJson, Sparkles, Loader2, FileScan, FileText, ArrowRight } from 'lucide-react'
+import { UploadCloud, CheckCircle2, Sparkles, Loader2, FileScan, FileText, ArrowRight, ShieldAlert } from 'lucide-react'
 import { motion, AnimatePresence } from 'framer-motion'
 
 export default function UploadPage() {
     const [uploadState, setUploadState] = useState<'idle' | 'scanning' | 'morphing' | 'done'>('idle')
     const [fileName, setFileName] = useState('')
     const [pasteText, setPasteText] = useState('')
-    const [schemaLevel, setSchemaLevel] = useState<'basic' | 'advanced'>('advanced')
-    const [generatedFields, setGeneratedFields] = useState<{ label: string, type: string }[]>([])
+    const [detectedForm, setDetectedForm] = useState<'afl-cio' | 'soles-for-christ' | 'basic'>('basic')
     const fileInputRef = useRef<HTMLInputElement>(null)
-
-    const generateMockFields = (textToAnalyze: string) => {
-        const lowerStr = textToAnalyze.toLowerCase()
-        let newFields: { label: string, type: string }[] = []
-
-        if (lowerStr.includes('afl') || lowerStr.includes('cio') || lowerStr.includes('community') || lowerStr.includes('service')) {
-            newFields = [
-                { label: 'Assistance Type Requested', type: 'select' },
-                { label: 'Head of Household Full Name', type: 'text' },
-                { label: 'Date of Birth (Head of Household)', type: 'text' },
-                { label: 'Current Address (City, State, Zip, County)', type: 'textarea' },
-                { label: 'Phone Number', type: 'tel' },
-                { label: 'Social Security Number (Head of Household)', type: 'sensitive_id' },
-                { label: 'Total Household Size', type: 'number' },
-                { label: 'Marital Status', type: 'select' },
-                { label: 'Race & Ethnicity', type: 'select' },
-                { label: 'Total Annual Income Bracket', type: 'select' },
-                { label: 'Dependent 1: Full Name & Relation', type: 'text' },
-                { label: 'Dependent 1: Social Security Number', type: 'sensitive_id' },
-                { label: 'Dependent 2: Full Name & Relation', type: 'text' },
-                { label: 'Dependent 2: Social Security Number', type: 'sensitive_id' },
-                { label: '+ Add Additional Dependent / Participant', type: 'dynamic_button' },
-            ]
-        } else if (lowerStr.includes('sole') || lowerStr.includes('shoe') || lowerStr.includes('christ')) {
-            newFields = [
-                { label: 'Parent / Guardian Name', type: 'text' },
-                { label: 'Date', type: 'text' },
-                { label: 'Address', type: 'text' },
-                { label: 'City & Zip', type: 'text' },
-                { label: 'County', type: 'text' },
-                { label: 'Phone Number', type: 'tel' },
-                { label: 'Number in Household', type: 'number' },
-                { label: 'Participant DOB / SSN', type: 'sensitive_id' },
-                { label: 'Race / Ethnicity', type: 'select' },
-                { label: 'Income Bracket', type: 'select' },
-                { label: 'Child 1: First & Last Name', type: 'text' },
-                { label: 'Child 1: Age', type: 'number' },
-                { label: 'Child 1: Details (Grade, Shoe Size)', type: 'textarea' },
-            ]
-        } else if (lowerStr.includes('registration') || lowerStr.includes('release')) {
-            newFields = [
-                { label: 'Registrant Full Name', type: 'text' },
-                { label: 'Email Address', type: 'email' },
-                { label: 'Phone Number', type: 'tel' },
-                { label: 'Home Address', type: 'text' },
-                { label: 'Social Security Number (Background Check)', type: 'sensitive_id' },
-                { label: 'Public Relations Photo Consent', type: 'select' },
-                { label: 'Signature Confirmation', type: 'text' },
-            ]
-        } else {
-            newFields = [
-                { label: 'First Name', type: 'text' },
-                { label: 'Last Name', type: 'text' },
-                { label: 'Email Address', type: 'email' },
-                { label: 'Phone Number', type: 'tel' },
-                { label: 'Social Security Number', type: 'sensitive_id' },
-                { label: 'Comments or Notes', type: 'textarea' },
-            ]
-        }
-
-        // If it hit the fallback branch, we flag it as basic
-        const isAdvanced = lowerStr.includes('afl') || lowerStr.includes('cio') || lowerStr.includes('community') || lowerStr.includes('service') || lowerStr.includes('sole') || lowerStr.includes('shoe') || lowerStr.includes('christ') || lowerStr.includes('registration') || lowerStr.includes('release')
-        setSchemaLevel(isAdvanced ? 'advanced' : 'basic')
-
-        setGeneratedFields(newFields)
-    }
 
     const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         if (e.target.files && e.target.files.length > 0) {
-            const rawName = e.target.files[0].name
+            const file = e.target.files[0]
+            const rawName = file.name
             setFileName(rawName.replace(/\.[^/.]+$/, ""))
-            generateMockFields(rawName)
+
+            // Core Demo Hack: intelligently route image files vs document files to our two primary complex mock-ups
+            const lowerName = rawName.toLowerCase()
+            if (file.type.includes('image') || lowerName.includes('jpg') || lowerName.includes('png') || lowerName.includes('jpeg') || lowerName.includes('afl')) {
+                setDetectedForm('afl-cio')
+            } else if (lowerName.includes('doc') || lowerName.includes('pdf') || lowerName.includes('sole') || lowerName.includes('christ') || lowerName.includes('registration')) {
+                setDetectedForm('soles-for-christ')
+            } else {
+                setDetectedForm('basic')
+            }
             handleSimulateScan()
         }
     }
@@ -91,7 +34,16 @@ export default function UploadPage() {
     const handlePasteSubmit = () => {
         if (!pasteText.trim()) return
         setFileName("Pasted Document Content")
-        generateMockFields(pasteText)
+
+        const lowerStr = pasteText.toLowerCase()
+        if (lowerStr.includes('afl') || lowerStr.includes('cio') || lowerStr.includes('community') || lowerStr.includes('service')) {
+            setDetectedForm('afl-cio')
+        } else if (lowerStr.includes('sole') || lowerStr.includes('shoe') || lowerStr.includes('christ') || lowerStr.includes('registration') || lowerStr.includes('release')) {
+            setDetectedForm('soles-for-christ')
+        } else {
+            setDetectedForm('basic')
+        }
+
         handleSimulateScan()
     }
 
@@ -110,6 +62,19 @@ export default function UploadPage() {
         setPasteText('')
         setFileName('')
     }
+
+    const renderPIIShield = (label: string, placeholder: string) => (
+        <motion.div
+            initial={{ borderColor: 'transparent', backgroundColor: 'transparent' }}
+            animate={{ borderColor: 'rgba(239, 68, 68, 0.4)', backgroundColor: 'rgba(239, 68, 68, 0.05)' }}
+            className="p-4 rounded-xl border-2 relative mt-4 mb-4"
+        >
+            <div className="absolute -top-3 right-4 bg-rose-500 text-white text-[10px] font-bold px-2 py-0.5 rounded-full tracking-wider uppercase flex items-center gap-1 shadow-sm">
+                <ShieldAlert className="w-3 h-3" /> PII SHIELD ACTIVE
+            </div>
+            <Input label={label} type="password" placeholder={placeholder} />
+        </motion.div>
+    );
 
     return (
         <div className="max-w-4xl mx-auto space-y-8 animate-in fade-in duration-500 py-12 px-4">
@@ -143,7 +108,7 @@ export default function UploadPage() {
                                                 <div className="p-3 bg-white dark:bg-slate-800 rounded-xl shadow-sm mb-3">
                                                     <UploadCloud className="w-6 h-6 text-indigo-500" />
                                                 </div>
-                                                <h4 className="font-semibold text-slate-900 dark:text-slate-100 mb-1">Upload Scanned Form</h4>
+                                                <h4 className="font-semibold text-slate-900 dark:text-slate-100 mb-1">Upload PDF or Image</h4>
                                                 <p className="text-xs text-slate-500">JPG, PNG, PDF, or DOCX</p>
                                             </div>
                                         </div>
@@ -152,7 +117,7 @@ export default function UploadPage() {
                                             className="hidden"
                                             ref={fileInputRef}
                                             onChange={handleFileChange}
-                                            accept="image/*,.pdf,.doc,.docx"
+                                            accept="image/*,.pdf,.doc,.docx,.txt"
                                         />
                                     </div>
 
@@ -204,7 +169,7 @@ export default function UploadPage() {
 
                                             <div className="flex justify-between items-start mb-6 border-b border-slate-200 dark:border-slate-800 pb-2">
                                                 <h2 className="text-2xl font-bold text-slate-800 dark:text-slate-100">
-                                                    {fileName || 'Patient Intake 2026'}
+                                                    {fileName || 'New Form Document'}
                                                 </h2>
                                                 {uploadState === 'done' && (
                                                     <Button variant="outline" size="sm" onClick={resetFlow} className="shrink-0 text-slate-500">
@@ -213,56 +178,143 @@ export default function UploadPage() {
                                                 )}
                                             </div>
 
-                                            {schemaLevel === 'basic' && (
-                                                <div className="bg-indigo-50 dark:bg-indigo-900/20 border border-indigo-200 dark:border-indigo-800 rounded-2xl p-6 mb-8 mt-2 flex flex-col md:flex-row gap-4 items-start md:items-center">
-                                                    <div className="bg-indigo-100 dark:bg-indigo-800 p-3 rounded-full shrink-0">
-                                                        <Sparkles className="w-6 h-6 text-indigo-600 dark:text-indigo-400" />
+                                            {/* FALLBACK DEMO FORM */}
+                                            {detectedForm === 'basic' && (
+                                                <div className="space-y-6">
+                                                    <div className="bg-indigo-50 dark:bg-indigo-900/20 border border-indigo-200 dark:border-indigo-800 rounded-2xl p-6 mb-8 mt-2 flex flex-col md:flex-row gap-4 items-start md:items-center">
+                                                        <div className="bg-indigo-100 dark:bg-indigo-800 p-3 rounded-full shrink-0">
+                                                            <Sparkles className="w-6 h-6 text-indigo-600 dark:text-indigo-400" />
+                                                        </div>
+                                                        <div className="flex-1">
+                                                            <h4 className="font-bold text-indigo-900 dark:text-indigo-300 mb-1">Standard Extraction Applied</h4>
+                                                            <p className="text-indigo-800 dark:text-indigo-400 text-sm leading-relaxed">
+                                                                We successfully translated your source material into basic text schemas. If you were expecting a more complex structure, our AI Agent can review your exact needs and build you a custom layout.
+                                                            </p>
+                                                        </div>
+                                                        <Button onClick={() => window.location.href = '/demo'} className="bg-indigo-600 hover:bg-indigo-700 text-white shadow-sm shrink-0">
+                                                            Refine via Chat AI
+                                                        </Button>
                                                     </div>
-                                                    <div className="flex-1">
-                                                        <h4 className="font-bold text-indigo-900 dark:text-indigo-300 mb-1">Standard Extraction Applied</h4>
-                                                        <p className="text-indigo-800 dark:text-indigo-400 text-sm leading-relaxed">
-                                                            We successfully translated your source material into basic text schemas. If you were expecting a more complex structure, our AI Agent can review your exact needs and build you a custom layout.
-                                                        </p>
+                                                    <div className="grid grid-cols-2 gap-6">
+                                                        <Input label="First Name" placeholder="Jane" />
+                                                        <Input label="Last Name" placeholder="Doe" />
                                                     </div>
-                                                    <Button onClick={() => window.location.href = '/demo'} className="bg-indigo-600 hover:bg-indigo-700 text-white shadow-sm shrink-0">
-                                                        Refine via Chat AI
-                                                    </Button>
+                                                    <Input label="Email Address" placeholder="jane.doe@example.com" type="email" />
+                                                    <Input label="Phone Number" placeholder="(555) 000-0000" type="tel" />
+                                                    {renderPIIShield("Social Security Number", "***-**-####")}
+                                                    <Input label="Comments or Notes" placeholder="Type here..." />
                                                 </div>
                                             )}
 
-                                            <div className="space-y-6">
-                                                {generatedFields.map((field, idx) => (
-                                                    <div key={idx} className="w-full">
-                                                        {field.type === 'sensitive_id' ? (
-                                                            <motion.div
-                                                                initial={{ borderColor: 'transparent', backgroundColor: 'transparent' }}
-                                                                animate={{ borderColor: 'rgba(239, 68, 68, 0.5)', backgroundColor: 'rgba(239, 68, 68, 0.05)' }}
-                                                                className="p-4 rounded-xl border-2 relative"
-                                                            >
-                                                                <div className="absolute -top-3 right-4 bg-rose-500 text-white text-[10px] font-bold px-2 py-0.5 rounded-full tracking-wider uppercase">
-                                                                    PII Shield Active
-                                                                </div>
-                                                                <Input label={field.label} type="password" placeholder="***-**-####" />
-                                                            </motion.div>
-                                                        ) : field.type === 'textarea' ? (
-                                                            <div>
-                                                                <label className="text-sm font-medium text-slate-700 dark:text-slate-300 flex items-center gap-2 mb-1.5 ml-1">{field.label}</label>
-                                                                <textarea className="w-full min-h-[100px] rounded-2xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 p-4 outline-none focus:ring-2 focus:ring-indigo-500 resize-none" placeholder="Type here..."></textarea>
-                                                            </div>
-                                                        ) : field.type === 'select' ? (
-                                                            <Input label={field.label} placeholder="Select an option..." />
-                                                        ) : field.type === 'dynamic_button' ? (
-                                                            <div className="pt-2">
-                                                                <Button type="button" variant="outline" className="w-full border-dashed border-2 bg-transparent hover:bg-slate-50 dark:hover:bg-slate-800 border-slate-300 dark:border-slate-700 text-slate-600 dark:text-slate-400 h-12">
-                                                                    {field.label}
-                                                                </Button>
-                                                            </div>
-                                                        ) : (
-                                                            <Input label={field.label} type={field.type} placeholder="..." />
-                                                        )}
+                                            {/* AFL-CIO COMPLEX DEMO FORM */}
+                                            {detectedForm === 'afl-cio' && (
+                                                <div className="space-y-6">
+                                                    <div className="grid grid-cols-2 gap-4">
+                                                        <Input label="Participant's Name" placeholder="Full name..." />
+                                                        <Input label="Date of Birth" placeholder="MM/DD/YYYY" type="date" />
                                                     </div>
-                                                ))}
-                                            </div>
+                                                    <Input label="Address" placeholder="Street Address" />
+                                                    <div className="grid grid-cols-3 gap-4">
+                                                        <Input label="City" placeholder="City" />
+                                                        <Input label="State" placeholder="State" />
+                                                        <Input label="Zip Code" placeholder="Zip" />
+                                                    </div>
+                                                    <Input label="County" placeholder="County" />
+                                                    <div className="grid grid-cols-2 gap-4">
+                                                        <Input label="Phone" type="tel" placeholder="(555) 000-0000" />
+                                                        <Input label="Alternate Phone/Email" placeholder="..." />
+                                                    </div>
+
+                                                    {renderPIIShield("Social Security Number", "***-**-####")}
+
+                                                    <div className="grid grid-cols-3 gap-4">
+                                                        <Input label="Sex" placeholder="Male / Female / Other" />
+                                                        <Input label="Age" type="number" placeholder="0" />
+                                                        <Input label="Household Size" type="number" placeholder="0" />
+                                                    </div>
+                                                    <Input label="Parent/Guardian's Name (if minor)" placeholder="..." />
+                                                    <Input label="Status" placeholder="Single / Married / Separated / Divorced / Widowed" />
+
+                                                    <div className="grid grid-cols-1 gap-4">
+                                                        <Input label="Any Household Member Disabled?" placeholder="Yes / No" />
+                                                        <Input label="Active Military or Veteran?" placeholder="Yes / No" />
+                                                        <Input label="Single Head of Household w/ Children?" placeholder="Yes / No" />
+                                                    </div>
+
+                                                    <div className="grid grid-cols-2 gap-4">
+                                                        <Input label="Race" placeholder="Select..." />
+                                                        <Input label="Ethnicity" placeholder="Select..." />
+                                                    </div>
+                                                    <Input label="Total Family Income Bracket (HUD Standard)" placeholder="Below 30% / 50% / 80% / Over 80%" />
+
+                                                    {/* Dynamic Array Mock */}
+                                                    <div className="mt-8 pt-6 border-t border-slate-200 dark:border-slate-800">
+                                                        <h3 className="font-bold text-lg mb-4 text-slate-800 dark:text-slate-200">Household Assistance Needs</h3>
+                                                        <div className="bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-4 rounded-xl mb-4 space-y-4">
+                                                            <div className="flex justify-between items-center text-sm font-semibold opacity-60"><span>Dependant 1</span></div>
+                                                            <div className="grid grid-cols-2 gap-4">
+                                                                <Input label="First and Last Name" placeholder="..." />
+                                                                <Input label="Relation" placeholder="..." />
+                                                            </div>
+                                                            <div className="grid grid-cols-2 gap-4">
+                                                                <Input label="Date of Birth" placeholder="MM/DD/YYYY" />
+                                                                <Input label="Social Security #" type="password" placeholder="***-**-####" />
+                                                            </div>
+                                                        </div>
+                                                        <Button variant="outline" className="w-full border-dashed border-2 py-6 text-slate-500">
+                                                            + Add Additional Participant
+                                                        </Button>
+                                                    </div>
+                                                </div>
+                                            )}
+
+                                            {/* SOLES FOR CHRIST / REGISTRATION COMPLEX DEMO FORM */}
+                                            {detectedForm === 'soles-for-christ' && (
+                                                <div className="space-y-6">
+                                                    <div className="grid grid-cols-2 gap-4">
+                                                        <Input label="Parent / Guardian Name" placeholder="Full name..." />
+                                                        <Input label="Date" placeholder="MM/DD/YYYY" type="date" />
+                                                    </div>
+                                                    {renderPIIShield("Participant DOB / SSN", "***-**-####")}
+                                                    <Input label="Address" placeholder="123 Main St" />
+                                                    <div className="grid grid-cols-2 gap-4">
+                                                        <Input label="City & Zip" placeholder="..." />
+                                                        <Input label="County" placeholder="..." />
+                                                    </div>
+                                                    <Input label="Phone Number" type="tel" placeholder="(555) 000-0000" />
+                                                    <Input label="Number in Household (Children / Adults / Seniors)" placeholder="Ex: 2 / 2 / 0" />
+
+                                                    <div className="grid grid-cols-2 gap-4">
+                                                        <Input label="Race" placeholder="Select..." />
+                                                        <Input label="Ethnicity" placeholder="Select..." />
+                                                    </div>
+                                                    <Input label="Income Bracket (HUD Size)" placeholder="Below 30% / 50% / 80% / Over 80%" />
+
+                                                    <div className="mt-8 pt-6 border-t border-slate-200 dark:border-slate-800">
+                                                        <h3 className="font-bold text-lg mb-4 text-slate-800 dark:text-slate-200">Child Details</h3>
+                                                        <div className="bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-4 rounded-xl mb-4 space-y-4">
+                                                            <div className="flex justify-between items-center text-sm font-semibold opacity-60"><span>Child 1</span></div>
+                                                            <Input label="Child's First & Last Name" placeholder="..." />
+                                                            <div className="grid grid-cols-3 gap-4">
+                                                                <Input label="Birthdate" placeholder="MM/DD/YYYY" />
+                                                                <Input label="Age" type="number" placeholder="0" />
+                                                                <Input label="Sex" placeholder="M/F" />
+                                                            </div>
+                                                            <div className="grid grid-cols-2 gap-4">
+                                                                <Input label="School" placeholder="..." />
+                                                                <Input label="Grade (P-12)" placeholder="..." />
+                                                            </div>
+                                                            <div className="grid grid-cols-2 gap-4">
+                                                                <Input label="Shoe Size" placeholder="..." />
+                                                                <Input label="Category (Boys/Girls/Mens/Womens)" placeholder="Select..." />
+                                                            </div>
+                                                        </div>
+                                                        <Button variant="outline" className="w-full border-dashed border-2 py-6 text-slate-500">
+                                                            + Add Another Child
+                                                        </Button>
+                                                    </div>
+                                                </div>
+                                            )}
 
                                             {uploadState === 'done' && (
                                                 <Button className="w-full h-14 text-lg mt-8 disabled:opacity-50 tracking-wide font-semibold rounded-2xl shrink-0" disabled>Submit Form</Button>
