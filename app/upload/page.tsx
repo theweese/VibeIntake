@@ -9,6 +9,7 @@ export default function UploadPage() {
     const [uploadState, setUploadState] = useState<'idle' | 'scanning' | 'morphing' | 'done'>('idle')
     const [fileName, setFileName] = useState('')
     const [pasteText, setPasteText] = useState('')
+    const [schemaLevel, setSchemaLevel] = useState<'basic' | 'advanced'>('advanced')
     const [generatedFields, setGeneratedFields] = useState<{ label: string, type: string }[]>([])
     const fileInputRef = useRef<HTMLInputElement>(null)
 
@@ -70,6 +71,11 @@ export default function UploadPage() {
                 { label: 'Comments or Notes', type: 'textarea' },
             ]
         }
+
+        // If it hit the fallback branch, we flag it as basic
+        const isAdvanced = lowerStr.includes('afl') || lowerStr.includes('cio') || lowerStr.includes('community') || lowerStr.includes('service') || lowerStr.includes('sole') || lowerStr.includes('shoe') || lowerStr.includes('christ') || lowerStr.includes('registration') || lowerStr.includes('release')
+        setSchemaLevel(isAdvanced ? 'advanced' : 'basic')
+
         setGeneratedFields(newFields)
     }
 
@@ -206,6 +212,23 @@ export default function UploadPage() {
                                                     </Button>
                                                 )}
                                             </div>
+
+                                            {schemaLevel === 'basic' && (
+                                                <div className="bg-indigo-50 dark:bg-indigo-900/20 border border-indigo-200 dark:border-indigo-800 rounded-2xl p-6 mb-8 mt-2 flex flex-col md:flex-row gap-4 items-start md:items-center">
+                                                    <div className="bg-indigo-100 dark:bg-indigo-800 p-3 rounded-full shrink-0">
+                                                        <Sparkles className="w-6 h-6 text-indigo-600 dark:text-indigo-400" />
+                                                    </div>
+                                                    <div className="flex-1">
+                                                        <h4 className="font-bold text-indigo-900 dark:text-indigo-300 mb-1">Standard Extraction Applied</h4>
+                                                        <p className="text-indigo-800 dark:text-indigo-400 text-sm leading-relaxed">
+                                                            We successfully translated your source material into basic text schemas. If you were expecting a more complex structure, our AI Agent can review your exact needs and build you a custom layout.
+                                                        </p>
+                                                    </div>
+                                                    <Button onClick={() => window.location.href = '/demo'} className="bg-indigo-600 hover:bg-indigo-700 text-white shadow-sm shrink-0">
+                                                        Refine via Chat AI
+                                                    </Button>
+                                                </div>
+                                            )}
 
                                             <div className="space-y-6">
                                                 {generatedFields.map((field, idx) => (
