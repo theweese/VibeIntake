@@ -46,7 +46,7 @@ export default function PricingPage() {
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8 pt-8">
                 {tiers.map((tier) => (
-                    <Card key={tier.name} className={`relative p-2 ${tier.highlight ? 'border-indigo-500 shadow-xl shadow-indigo-500/10 dark:shadow-indigo-500/5' : ''}`}>
+                    <Card key={tier.name} className={`relative p-2 flex flex-col h-full ${tier.highlight ? 'border-indigo-500 shadow-xl shadow-indigo-500/10 dark:shadow-indigo-500/5' : ''}`}>
                         {tier.highlight && (
                             <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-indigo-500 text-white text-[10px] font-bold tracking-wider uppercase px-3 py-1 rounded-full">
                                 Most Popular
@@ -62,7 +62,7 @@ export default function PricingPage() {
                             <p className="text-slate-500 dark:text-slate-400 mt-2 text-sm">{tier.description}</p>
                         </CardHeader>
 
-                        <CardContent className="pt-2">
+                        <CardContent className="pt-2 flex flex-col flex-grow">
                             <div className="mb-8 flex items-baseline gap-1">
                                 <span className="text-4xl font-extrabold text-slate-900 dark:text-white">{tier.price}</span>
                                 {tier.period && <span className="text-slate-500 font-medium">{tier.period}</span>}
@@ -77,13 +77,15 @@ export default function PricingPage() {
                                 ))}
                             </ul>
 
-                            <Button variant={tier.highlight ? 'primary' : 'outline'} className="w-full">
-                                {tier.price === "Custom" ? (
-                                    <Link href="/contact" className="w-full text-center">Schedule a Meeting</Link>
-                                ) : (
-                                    "Get Started"
-                                )}
-                            </Button>
+                            <div className="mt-auto pt-8">
+                                <Button variant={tier.highlight ? 'primary' : 'outline'} className="w-full">
+                                    {tier.price === "Custom" ? (
+                                        <Link href="/contact" className="w-full text-center hover:text-white">Schedule a Meeting</Link>
+                                    ) : (
+                                        "Get Started"
+                                    )}
+                                </Button>
+                            </div>
                         </CardContent>
                     </Card>
                 ))}
