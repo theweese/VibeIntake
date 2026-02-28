@@ -8,6 +8,7 @@ import { motion } from 'framer-motion'
 export default function UploadPage() {
     const [uploadState, setUploadState] = useState<'idle' | 'scanning' | 'morphing' | 'done'>('idle')
     const [fileName, setFileName] = useState('')
+    const [generatedFields, setGeneratedFields] = useState<{ label: string, type: string }[]>([])
     const fileInputRef = useRef<HTMLInputElement>(null)
 
     const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -15,6 +16,49 @@ export default function UploadPage() {
             const rawName = e.target.files[0].name
             // Strip the extension for a cleaner form title
             setFileName(rawName.replace(/\.[^/.]+$/, ""))
+
+            // Generate mock fields based on filename
+            const lowerName = rawName.toLowerCase()
+            let newFields: { label: string, type: string }[] = []
+
+            if (lowerName.includes('sole') || lowerName.includes('shoe') || lowerName.includes('christ')) {
+                newFields = [
+                    { label: 'Parent / Guardian Name', type: 'text' },
+                    { label: 'Date', type: 'text' },
+                    { label: 'Address', type: 'text' },
+                    { label: 'City & Zip', type: 'text' },
+                    { label: 'County', type: 'text' },
+                    { label: 'Phone Number', type: 'tel' },
+                    { label: 'Number in Household', type: 'number' },
+                    { label: 'Participant DOB / SSN', type: 'sensitive_id' },
+                    { label: 'Race / Ethnicity', type: 'select' },
+                    { label: 'Income Bracket', type: 'select' },
+                    { label: 'Child 1: First & Last Name', type: 'text' },
+                    { label: 'Child 1: Age', type: 'number' },
+                    { label: 'Child 1: Details (Grade, Shoe Size)', type: 'textarea' },
+                ]
+            } else if (lowerName.includes('registration') || lowerName.includes('release')) {
+                newFields = [
+                    { label: 'Registrant Full Name', type: 'text' },
+                    { label: 'Email Address', type: 'email' },
+                    { label: 'Phone Number', type: 'tel' },
+                    { label: 'Home Address', type: 'text' },
+                    { label: 'Social Security Number (Background Check)', type: 'sensitive_id' },
+                    { label: 'Public Relations Photo Consent', type: 'select' },
+                    { label: 'Signature Confirmation', type: 'text' },
+                ]
+            } else {
+                newFields = [
+                    { label: 'First Name', type: 'text' },
+                    { label: 'Last Name', type: 'text' },
+                    { label: 'Email Address', type: 'email' },
+                    { label: 'Phone Number', type: 'tel' },
+                    { label: 'Social Security Number', type: 'sensitive_id' },
+                    { label: 'Comments or Notes', type: 'textarea' },
+                ]
+            }
+            setGeneratedFields(newFields)
+
             handleSimulateScan()
         }
     }
@@ -136,30 +180,31 @@ export default function UploadPage() {
                                 </h2>
 
                                 <div className="space-y-6">
-                                    <div className="grid grid-cols-2 gap-6">
-                                        <Input label="First Name" placeholder="Jane" />
-                                        <Input label="Last Name" placeholder="Doe" />
-                                    </div>
-
-                                    <Input label="Email Address" placeholder="jane.doe@example.com" type="email" />
-                                    <Input label="Phone Number" placeholder="(555) 000-0000" type="tel" />
-
-                                    {/* Dynamically highlight the PII safety shield mock block */}
-                                    <motion.div
-                                        initial={{ borderColor: 'transparent', backgroundColor: 'transparent' }}
-                                        animate={{ borderColor: 'rgba(239, 68, 68, 0.5)', backgroundColor: 'rgba(239, 68, 68, 0.05)' }}
-                                        className="p-4 rounded-xl border-2 relative"
-                                    >
-                                        <div className="absolute -top-3 right-4 bg-rose-500 text-white text-[10px] font-bold px-2 py-0.5 rounded-full tracking-wider uppercase">
-                                            PII Shield Active
+                                    {generatedFields.map((field, idx) => (
+                                        <div key={idx} className="w-full">
+                                            {field.type === 'sensitive_id' ? (
+                                                <motion.div
+                                                    initial={{ borderColor: 'transparent', backgroundColor: 'transparent' }}
+                                                    animate={{ borderColor: 'rgba(239, 68, 68, 0.5)', backgroundColor: 'rgba(239, 68, 68, 0.05)' }}
+                                                    className="p-4 rounded-xl border-2 relative"
+                                                >
+                                                    <div className="absolute -top-3 right-4 bg-rose-500 text-white text-[10px] font-bold px-2 py-0.5 rounded-full tracking-wider uppercase">
+                                                        PII Shield Active
+                                                    </div>
+                                                    <Input label={field.label} type="password" placeholder="***-**-####" />
+                                                </motion.div>
+                                            ) : field.type === 'textarea' ? (
+                                                <div>
+                                                    <label className="text-sm font-medium text-slate-700 dark:text-slate-300 flex items-center gap-2 mb-1.5 ml-1">{field.label}</label>
+                                                    <textarea className="w-full min-h-[100px] rounded-2xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 p-4 outline-none focus:ring-2 focus:ring-indigo-500 resize-none" placeholder="Type here..."></textarea>
+                                                </div>
+                                            ) : field.type === 'select' ? (
+                                                <Input label={field.label} placeholder="Select an option..." />
+                                            ) : (
+                                                <Input label={field.label} type={field.type} placeholder="..." />
+                                            )}
                                         </div>
-                                        <Input label="Social Security Number" type="password" placeholder="***-**-####" />
-                                    </motion.div>
-
-                                    <div>
-                                        <label className="text-sm font-medium text-slate-700 dark:text-slate-300 flex items-center gap-2 mb-1.5 ml-1">Comments or Notes</label>
-                                        <textarea className="w-full min-h-[100px] rounded-2xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 p-4 outline-none focus:ring-2 focus:ring-indigo-500 resize-none" placeholder="Type here..."></textarea>
-                                    </div>
+                                    ))}
                                 </div>
                             </motion.div>
                         )}
