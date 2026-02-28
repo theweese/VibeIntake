@@ -8,7 +8,7 @@ import { ThemeProvider } from "@/components/ThemeProvider";
 const outfit = Outfit({ subsets: ["latin"], variable: '--font-outfit' });
 
 export const metadata: Metadata = {
-  title: "VibeIntake | The Privacy-First Action Engine",
+  title: "VibeIntake | AI Web Form Generation & Data Importing",
   description: "Paper-to-Digital Intake Platform",
 };
 
