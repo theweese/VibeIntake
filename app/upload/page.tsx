@@ -2,7 +2,7 @@
 
 import { useState, useRef } from 'react'
 import { Card, CardHeader, CardTitle, CardContent, Button, PageHeader, Badge, Input } from '@/components/ui'
-import { UploadCloud, CheckCircle2, Sparkles, Loader2, FileScan, FileText, ArrowRight, ShieldAlert } from 'lucide-react'
+import { UploadCloud, CheckCircle2, Sparkles, Loader2, FileScan, FileText, ArrowRight, ShieldAlert, Bot, ShieldCheck, RefreshCcw } from 'lucide-react'
 import { motion, AnimatePresence } from 'framer-motion'
 
 export default function UploadPage() {
@@ -12,6 +12,45 @@ export default function UploadPage() {
     const [detectedForm, setDetectedForm] = useState<'afl-cio' | 'soles-for-christ' | 'basic'>('basic')
     const fileInputRef = useRef<HTMLInputElement>(null)
 
+    // Interactive Demo Chat State
+    const [dynamicFields, setDynamicFields] = useState<string[]>([])
+    const [chatInput, setChatInput] = useState('')
+    const [isVerifying, setIsVerifying] = useState(false)
+    const [captchaKey, setCaptchaKey] = useState('')
+    const [captchaTarget, setCaptchaTarget] = useState('V1B3')
+    const [iterationCount, setIterationCount] = useState(0)
+
+    const generateCaptcha = () => {
+        const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789'
+        let result = ''
+        for (let i = 0; i < 4; i++) {
+            result += chars.charAt(Math.floor(Math.random() * chars.length))
+        }
+        setCaptchaTarget(result)
+        setCaptchaKey('')
+    }
+
+    const handleChatSubmit = (e: React.FormEvent) => {
+        e.preventDefault()
+        if (!chatInput.trim()) return
+        if (iterationCount >= 2) {
+            alert("Demo limit reached. Please create an account to continue customizing.")
+            return
+        }
+        setIsVerifying(true)
+        generateCaptcha()
+    }
+
+    const handleCaptchaVerify = () => {
+        if (captchaKey.toUpperCase() === captchaTarget) {
+            setIsVerifying(false)
+            setIterationCount(prev => prev + 1)
+            setDynamicFields(prev => [...prev, chatInput])
+            setChatInput('')
+        } else {
+            alert("Incorrect verification code, please try again.")
+        }
+    }
     const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         if (e.target.files && e.target.files.length > 0) {
             const file = e.target.files[0]
@@ -61,6 +100,8 @@ export default function UploadPage() {
         setUploadState('idle')
         setPasteText('')
         setFileName('')
+        setDynamicFields([])
+        setIterationCount(0)
     }
 
     const renderPIIShield = (label: string, placeholder: string) => (
@@ -309,10 +350,20 @@ export default function UploadPage() {
                                                                 <Input density="compact" label="Category (Boys/Girls/Mens/Womens)" placeholder="Select..." />
                                                             </div>
                                                         </div>
-                                                        <Button variant="outline" className="w-full border-dashed border-2 py-6 text-slate-500">
+                                                        <Button variant="outline" className="w-full border-dashed border-2 py-4 h-auto text-slate-500 hover:text-indigo-600 hover:border-indigo-300 dark:hover:border-indigo-800 transition-colors">
                                                             + Add Another Child
                                                         </Button>
                                                     </div>
+                                                </div>
+                                            )}
+
+                                            {/* Dynamic fields added by Chat */}
+                                            {dynamicFields.length > 0 && (
+                                                <div className="space-y-4 mt-8 pt-6 border-t border-slate-200 dark:border-slate-800 animate-in fade-in zoom-in-95 duration-500">
+                                                    <h3 className="font-semibold text-base mb-3 text-indigo-600 dark:text-indigo-400 flex items-center gap-2"><Sparkles className="w-4 h-4" /> Field Modified by AI</h3>
+                                                    {dynamicFields.map((field, idx) => (
+                                                        <Input density="compact" key={idx} label={field} placeholder="Auto-generated due to your feedback..." className="border-indigo-200 dark:border-indigo-800 bg-indigo-50/50 dark:bg-indigo-900/10 focus:ring-indigo-400" />
+                                                    ))}
                                                 </div>
                                             )}
 
@@ -323,10 +374,36 @@ export default function UploadPage() {
                                     )}
                                 </CardContent>
                                 {uploadState === 'done' && (
-                                    <div className="p-8 bg-slate-50 dark:bg-slate-900/50 border-t border-slate-200 dark:border-slate-800 text-center shrink-0">
-                                        <h4 className="font-semibold text-slate-800 dark:text-slate-200 mb-2">Want to customize this further or add strict data protection?</h4>
-                                        <p className="text-sm text-slate-500 mb-6">Create a free account to enable Field Mapping, AES-256 Encryption, and File Uploads.</p>
-                                        <Button className="w-full h-12 bg-indigo-600 hover:bg-indigo-700 text-white shadow-lg">Sign Up to Deploy Form</Button>
+                                    <div className="bg-slate-50 dark:bg-slate-900/50 border-t border-slate-200 dark:border-slate-800 text-center shrink-0">
+                                        {!isVerifying ? (
+                                            <div className="p-8 w-full max-w-2xl mx-auto space-y-4 flex flex-col items-center">
+                                                <h4 className="font-semibold flex items-center justify-center gap-2 text-slate-800 dark:text-slate-200">
+                                                    <Bot className="w-5 h-5 text-indigo-500" /> Refine with AI Assistant
+                                                </h4>
+                                                <p className="text-sm text-center text-slate-500">Need to modify this form? Tell the AI what needs changing.</p>
+                                                <form onSubmit={handleChatSubmit} className="flex gap-2 w-full mt-2">
+                                                    <Input className="flex-1 bg-white dark:bg-slate-950 shadow-sm" placeholder="e.g., Add an emergency contact field..." value={chatInput} onChange={e => setChatInput(e.target.value)} />
+                                                    <Button size="sm" type="submit" disabled={!chatInput.trim()} className="h-10 px-6 bg-indigo-600 hover:bg-indigo-700 text-white">Send</Button>
+                                                </form>
+                                                {iterationCount > 0 && (
+                                                    <p className="text-[10px] text-center opacity-50 uppercase tracking-widest mt-2">Demo limit: {2 - iterationCount} changes remaining.</p>
+                                                )}
+                                            </div>
+                                        ) : (
+                                            <div className="p-8 w-full max-w-sm mx-auto space-y-4 text-center">
+                                                <ShieldCheck className="w-10 h-10 text-amber-500 mx-auto" />
+                                                <h4 className="font-bold text-lg text-slate-900 dark:text-slate-100">Security Check</h4>
+                                                <p className="text-sm text-slate-500">Please prove you are human before we apply AI modifications.</p>
+                                                <div className="p-4 my-4 bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl flex items-center justify-between font-mono font-bold text-2xl tracking-[0.5em] text-slate-700 dark:text-slate-300 shadow-sm">
+                                                    {captchaTarget.split('').join(' ')} <RefreshCcw className="w-5 h-5 ml-4 text-slate-400 cursor-pointer hover:text-indigo-500 transition-colors" onClick={generateCaptcha} />
+                                                </div>
+                                                <Input density="compact" placeholder="Type the characters above" className="text-center tracking-widest uppercase font-mono bg-white dark:bg-slate-950" value={captchaKey} onChange={(e) => setCaptchaKey(e.target.value)} onKeyDown={(e) => e.key === 'Enter' && handleCaptchaVerify()} />
+                                                <div className="grid grid-cols-2 gap-3 mt-4">
+                                                    <Button variant="outline" onClick={() => setIsVerifying(false)}>Cancel</Button>
+                                                    <Button onClick={handleCaptchaVerify}>Verify & Apply Fix</Button>
+                                                </div>
+                                            </div>
+                                        )}
                                     </div>
                                 )}
                             </Card>
