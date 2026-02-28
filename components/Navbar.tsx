@@ -8,12 +8,25 @@ import { useTheme } from "next-themes"
 
 export function Navbar() {
     const [isLoggedIn, setIsLoggedIn] = useState(false)
+    const [sessionData, setSessionData] = useState<{ company: string, user: string } | null>(null)
     const { theme, setTheme } = useTheme()
     const [mounted, setMounted] = useState(false)
 
     useEffect(() => {
         setMounted(true)
+        const curSession = localStorage.getItem('vibe-session')
+        if (curSession) {
+            setIsLoggedIn(true)
+            setSessionData(JSON.parse(curSession))
+        }
     }, [])
+
+    const handleLogout = () => {
+        localStorage.removeItem('vibe-session')
+        setIsLoggedIn(false)
+        setSessionData(null)
+        window.location.href = '/'
+    }
 
     return (
         <header className="sticky top-0 z-50 w-full border-b border-white/10 bg-white/40 dark:bg-black/20 backdrop-blur-xl">
@@ -35,8 +48,8 @@ export function Navbar() {
                             <div className="w-5 h-5 rounded bg-indigo-100 dark:bg-indigo-900/40 flex items-center justify-center">
                                 <Building2 className="w-3 h-3 text-indigo-600 dark:text-indigo-400" />
                             </div>
-                            <span className="text-sm font-medium text-slate-700 dark:text-slate-300">St. Joseph Hospital</span>
-                            <span className="ml-1 text-[10px] font-bold py-0.5 px-1.5 rounded bg-indigo-50 dark:bg-indigo-900/30 border border-indigo-200 dark:border-indigo-800 text-indigo-600 dark:text-indigo-400">ENT</span>
+                            <span className="text-sm font-medium text-slate-700 dark:text-slate-300">{sessionData?.company || 'My Organization'}</span>
+                            <span className="ml-1 text-[10px] font-bold py-0.5 px-1.5 rounded bg-indigo-50 dark:bg-indigo-900/30 border border-indigo-200 dark:border-indigo-800 text-indigo-600 dark:text-indigo-400">HQ</span>
                             <ChevronDown className="w-4 h-4 text-slate-400 ml-1 group-hover:text-slate-600 dark:group-hover:text-slate-300" />
                         </div>
                     )}
@@ -72,15 +85,14 @@ export function Navbar() {
                                 </button>
                             )}
 
-                            <button
-                                onClick={() => setIsLoggedIn(true)}
-                                className="text-sm font-semibold text-indigo-600 hover:text-indigo-700 dark:text-indigo-400 dark:hover:text-indigo-300 transition-colors flex items-center gap-2"
-                            >
+                            <Link href="/signup" className="text-sm font-semibold text-indigo-600 hover:text-indigo-700 dark:text-indigo-400 dark:hover:text-indigo-300 transition-colors flex items-center gap-2">
                                 Login <LogIn className="w-4 h-4" />
-                            </button>
-                            <Button size="sm" className="rounded-full shadow-sm" onClick={() => setIsLoggedIn(true)}>
-                                Sign Up
-                            </Button>
+                            </Link>
+                            <Link href="/signup">
+                                <Button size="sm" className="rounded-full shadow-sm">
+                                    Sign Up
+                                </Button>
+                            </Link>
                         </>
                     ) : (
                         // Logged In Navigation
@@ -88,7 +100,7 @@ export function Navbar() {
                             <Link href="/upload" className="text-sm font-medium text-slate-600 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white transition-colors flex items-center gap-1.5 animate-in fade-in slide-in-from-right-2" style={{ animationDelay: '50ms' }}>
                                 <UploadCloud className="w-4 h-4" /> Upload
                             </Link>
-                            <Link href="/" className="text-sm font-medium text-slate-600 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white transition-colors flex items-center gap-1.5 animate-in fade-in slide-in-from-right-2" style={{ animationDelay: '100ms' }}>
+                            <Link href="/dashboard" className="text-sm font-medium text-slate-600 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white transition-colors flex items-center gap-1.5 animate-in fade-in slide-in-from-right-2" style={{ animationDelay: '100ms' }}>
                                 <Kanban className="w-4 h-4" /> Dashboard
                             </Link>
                             <Link href="/pipelines" className="text-sm font-medium text-slate-600 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white transition-colors flex items-center gap-1.5 animate-in fade-in slide-in-from-right-2" style={{ animationDelay: '150ms' }}>
@@ -103,13 +115,17 @@ export function Navbar() {
                             <div className="group relative">
                                 <div
                                     className="w-9 h-9 rounded-full bg-slate-200 dark:bg-slate-800 border-2 border-slate-300 dark:border-slate-700 flex items-center justify-center text-xs font-bold text-slate-600 dark:text-slate-300 mt-0 shadow-inner overflow-hidden cursor-pointer hover:border-indigo-500 transition-colors animate-in zoom-in"
-                                    onClick={() => setIsLoggedIn(false)}
+                                    onClick={handleLogout}
                                 >
-                                    <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Brett" alt="Avatar" className="w-full h-full object-cover" />
+                                    {sessionData?.user ? (
+                                        <span className="uppercase">{sessionData.user.charAt(0)}</span>
+                                    ) : (
+                                        <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Brett" alt="Avatar" className="w-full h-full object-cover" />
+                                    )}
                                 </div>
                                 {/* Tooltip hint to logout */}
                                 <div className="absolute top-12 right-0 w-max bg-slate-800 text-white text-xs py-1 px-3 rounded shadow-lg opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">
-                                    Log out mock session
+                                    Sign Out
                                 </div>
                             </div>
                         </>
