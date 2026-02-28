@@ -376,13 +376,8 @@ export default function UploadPage() {
                                 {uploadState === 'done' && (
                                     <div className="bg-slate-50 dark:bg-slate-900/50 border-t border-slate-200 dark:border-slate-800 text-center shrink-0">
                                         {!isVerifying ? (
-                                            <div className="grid grid-cols-1 md:grid-cols-2 divide-y md:divide-y-0 md:divide-x divide-slate-200 dark:divide-slate-800">
-                                                <div className="p-8 w-full mx-auto space-y-4 flex flex-col items-center justify-center">
-                                                    <h4 className="font-semibold text-slate-800 dark:text-slate-200 mb-2">Want to customize this further or add strict data protection?</h4>
-                                                    <p className="text-sm text-slate-500 mb-6 px-4">Create a free account to enable Field Mapping, AES-256 Encryption, and File Uploads.</p>
-                                                    <Button onClick={() => window.location.href = '/signup'} className="w-full max-w-xs h-12 bg-slate-800 hover:bg-slate-900 text-white dark:bg-slate-100 dark:hover:bg-white dark:text-slate-900 shadow-lg">Sign Up to Deploy Form</Button>
-                                                </div>
-                                                <div className="p-8 w-full mx-auto space-y-4 flex flex-col items-center justify-center">
+                                            <div className="flex flex-col divide-y divide-slate-200 dark:divide-slate-800">
+                                                <div className="p-8 w-full mx-auto space-y-4 flex flex-col items-center justify-center bg-white/50 dark:bg-slate-950/20">
                                                     <h4 className="font-semibold flex items-center justify-center gap-2 text-slate-800 dark:text-slate-200">
                                                         <Bot className="w-5 h-5 text-indigo-500" /> Refine with AI Assistant
                                                     </h4>
@@ -394,6 +389,11 @@ export default function UploadPage() {
                                                     {iterationCount > 0 && (
                                                         <p className="text-[10px] text-center opacity-50 uppercase tracking-widest mt-2">Demo limit: {2 - iterationCount} changes remaining.</p>
                                                     )}
+                                                </div>
+                                                <div className="p-8 w-full mx-auto space-y-4 flex flex-col items-center justify-center bg-slate-100/50 dark:bg-slate-900/50">
+                                                    <h4 className="font-semibold text-slate-800 dark:text-slate-200 mb-2">Want to customize this further or add strict data protection?</h4>
+                                                    <p className="text-sm text-slate-500 mb-4 px-4 max-w-md">Create a free account to enable Field Mapping, AES-256 Encryption, and File Uploads.</p>
+                                                    <Button onClick={() => window.location.href = '/signup'} className="w-full max-w-xs h-12 bg-slate-800 hover:bg-slate-900 text-white dark:bg-slate-100 dark:hover:bg-white dark:text-slate-900 shadow-lg">Sign Up to Deploy Form</Button>
                                                 </div>
                                             </div>
                                         ) : (
