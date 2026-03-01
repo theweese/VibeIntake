@@ -86,14 +86,38 @@ export default function AIFormEditor() {
         setTimeout(() => {
             // Mock AI Action executing
             const inputLower = chatInput.toLowerCase()
+
             if (inputLower.includes('combine') || inputLower.includes('full name')) {
-                setFormLayout([
-                    { id: 'f_new', label: "Full Name", required: true },
-                    { id: 'f3', label: "Date of Birth", type: "date" }
-                ])
-                toast.success("AI: Combined First & Last name fields.")
+                // Keep all elements, but if we find "Parent / Guardian Name", swap it
+                setFormLayout(prev => {
+                    const next = [...prev]
+                    const targetIndex = next.findIndex(f => f.label.includes('First Name') || f.label.includes('Parent / Guardian Name') || f.label.includes('Last Name'))
+                    if (targetIndex !== -1) {
+                        next[targetIndex] = { ...next[targetIndex], label: "Full Name", id: 'f_combined_name', colSpan: 12 }
+                        // remove any sequential matching ones (e.g. Last Name if First Name was found)
+                        const secondTarget = next.findIndex((f, idx) => idx > targetIndex && (f.label.includes('Last Name')))
+                        if (secondTarget !== -1) next.splice(secondTarget, 1)
+                    }
+                    return next
+                })
+                toast.success("AI: Combined name fields into Full Name.")
+            } else if (inputLower.includes('note') || inputLower.includes('comment') || inputLower.includes('add')) {
+                setFormLayout(prev => {
+                    const next = [...prev]
+                    // Insert before the trailing submit button if there is one, else at end
+                    const buttonIdx = next.findIndex(f => f.type === 'button')
+                    const newField = { id: `f_added_${Date.now()}`, label: "Notes / Comments", type: "text", colSpan: 12 }
+
+                    if (buttonIdx !== -1) {
+                        next.splice(buttonIdx, 0, newField)
+                    } else {
+                        next.push(newField)
+                    }
+                    return next
+                })
+                toast.success("AI: Added Notes field to the layout.")
             } else {
-                toast.error("AI Mock: Try asking to 'Combine the name fields'")
+                toast.error("AI Mock: Try asking to 'Add a notes field'")
             }
             setIsAiThinking(false)
             setChatInput('')
