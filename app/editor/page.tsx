@@ -13,6 +13,7 @@ export default function AIFormEditor() {
     const [isAiThinking, setIsAiThinking] = useState(false)
     const [showShareModal, setShowShareModal] = useState(false)
     const [copied, setCopied] = useState<string | null>(null)
+    const [chatMessages, setChatMessages] = useState<{ role: 'user' | 'ai', text: string }[]>([])
 
     // Simulated State of the Output Component
     const [formLayout, setFormLayout] = useState<FormField[]>([
@@ -82,12 +83,27 @@ export default function AIFormEditor() {
         e.preventDefault()
         if (!chatInput.trim()) return
 
+        const currentInput = chatInput
+        setChatMessages(prev => [...prev, { role: 'user', text: currentInput }])
+        setChatInput('')
         setIsAiThinking(true)
+
         setTimeout(() => {
             // Mock AI Action executing
-            const inputLower = chatInput.toLowerCase()
+            const inputLower = currentInput.toLowerCase()
 
-            if (inputLower.includes('combine') || inputLower.includes('full name')) {
+            if (inputLower.includes('remove') && (inputLower.includes('note') || inputLower.includes('comment'))) {
+                setFormLayout(prev => {
+                    const next = [...prev]
+                    for (let i = next.length - 1; i >= 0; i--) {
+                        if (next[i].label.toLowerCase().includes('note') || next[i].label.toLowerCase().includes('comment')) {
+                            next.splice(i, 1) // Slice them out
+                        }
+                    }
+                    return next
+                })
+                setChatMessages(prev => [...prev, { role: 'ai', text: "Removed the Notes / Comments field." }])
+            } else if (inputLower.includes('combine') || inputLower.includes('full name')) {
                 // Keep all elements, but if we find "Parent / Guardian Name", swap it
                 setFormLayout(prev => {
                     const next = [...prev]
@@ -100,7 +116,7 @@ export default function AIFormEditor() {
                     }
                     return next
                 })
-                toast.success("AI: Combined name fields into Full Name.")
+                setChatMessages(prev => [...prev, { role: 'ai', text: "Combined name fields into Full Name." }])
             } else if (inputLower.includes('note') || inputLower.includes('comment') || inputLower.includes('add')) {
                 setFormLayout(prev => {
                     const next = [...prev]
@@ -115,12 +131,11 @@ export default function AIFormEditor() {
                     }
                     return next
                 })
-                toast.success("AI: Added Notes field to the layout.")
+                setChatMessages(prev => [...prev, { role: 'ai', text: "Added Notes field to the layout." }])
             } else {
-                toast.error("AI Mock: Try asking to 'Add a notes field'")
+                setChatMessages(prev => [...prev, { role: 'ai', text: "I didn't quite catch that. Try asking to 'Add a notes field' or 'Remove the notes field'." }])
             }
             setIsAiThinking(false)
-            setChatInput('')
         }, 1500)
     }
 
@@ -136,7 +151,6 @@ export default function AIFormEditor() {
                         </h1>
                     </div>
                     <div className="flex gap-3">
-                        <Button variant="outline"><Undo className="w-4 h-4 mr-2" /> Revert</Button>
                         <Button variant="primary" onClick={() => setShowShareModal(true)}><Save className="w-4 h-4 mr-2" /> Publish Template</Button>
                     </div>
                 </div>
@@ -217,14 +231,22 @@ export default function AIFormEditor() {
                         </div>
 
                         <div className="flex-1 p-6 flex flex-col justify-end space-y-4 overflow-y-auto custom-scrollbar">
-                            <div className="flex gap-3">
-                                <div className="w-8 h-8 rounded-full bg-slate-200 dark:bg-slate-800 flex items-center justify-center shrink-0">
-                                    <User className="w-4 h-4 text-slate-500" />
+                            {chatMessages.length === 0 && (
+                                <div className="text-center text-slate-400 dark:text-slate-500 text-sm italic opacity-70 my-8">
+                                    No messages yet. Try asking me "Add a notes field."
                                 </div>
-                                <div className="p-3 bg-slate-200 dark:bg-slate-800 rounded-2xl rounded-tl-sm text-sm text-slate-800 dark:text-slate-200">
-                                    Combine the first and last name fields into a single "Full Name" block.
+                            )}
+
+                            {chatMessages.map((msg, idx) => (
+                                <div key={idx} className={`flex gap-3 ${msg.role === 'user' ? 'flex-row-reverse' : ''}`}>
+                                    <div className={`w-8 h-8 rounded-full flex items-center justify-center shrink-0 ${msg.role === 'ai' ? 'bg-indigo-500' : 'bg-slate-200 dark:bg-slate-800'}`}>
+                                        {msg.role === 'ai' ? <Sparkles className="w-4 h-4 text-white" /> : <User className="w-4 h-4 text-slate-500" />}
+                                    </div>
+                                    <div className={`p-3 rounded-2xl text-sm ${msg.role === 'ai' ? 'bg-indigo-50 text-indigo-900 border border-indigo-100 dark:bg-indigo-900/30 dark:border-indigo-800 dark:text-indigo-100 rounded-tl-sm' : 'bg-slate-200 dark:bg-slate-800 text-slate-800 dark:text-slate-200 rounded-tr-sm'}`}>
+                                        {msg.text}
+                                    </div>
                                 </div>
-                            </div>
+                            ))}
 
                             {isAiThinking && (
                                 <div className="flex gap-3">
