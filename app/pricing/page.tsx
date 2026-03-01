@@ -13,20 +13,20 @@ export default function PricingPage() {
             highlight: false
         },
         {
-            name: "Business",
-            price: "$299",
+            name: "Non-Profit",
+            price: "$99",
             period: "/month",
-            description: "For clinics and offices needing HIPAA compliant form pipelines.",
-            features: ["5,000 Form Scans/mo", "PII Safety Shield", "Webhook Delivery", "AI Form Editor", "Sub-Accounts"],
+            description: "Empowering local organizations to save time and money by digitizing standard intakes.",
+            features: ["5,000 Form Scans/mo", "PII Safety Shield", "Volunteer Access Logs", "AI Form Editor"],
             icon: <Sparkles className="w-6 h-6 text-indigo-500" />,
             highlight: true
         },
         {
-            name: "Enterprise",
+            name: "Business",
             price: "Custom",
-            description: "For municipalities and hospital systems requiring massive historical uploads.",
-            features: ["Unlimited Scans", "Dedicated VPC Vault", "Human-in-the-Loop Queue", "Batch SFTP Ingestion"],
-            icon: <Building2 className="w-6 h-6 text-rose-500" />,
+            description: "For municipalities, enterprise clinics, and organizations requiring massive historical data imports.",
+            features: ["Unlimited Scans", "Dedicated VPC Vault", "Human-in-the-Loop Queue", "Custom Sub-Accounts"],
+            icon: <Building2 className="w-6 h-6 text-amber-500" />,
             highlight: false
         }
     ]

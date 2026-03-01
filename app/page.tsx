@@ -102,7 +102,7 @@ export default function MarketingHome() {
                         <p className="text-slate-600 dark:text-slate-400 max-w-2xl mx-auto text-lg">Whether you are organizing personal records or scaling an enterprise clinic, VibeIntake adapts to your workflow.</p>
                     </div>
 
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto">
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-7xl mx-auto">
                         {/* For Yourself */}
                         <Card className="bg-white dark:bg-slate-800 border-slate-200 dark:border-slate-700 shadow-xl group rounded-[2rem] flex flex-col h-full">
                             <CardContent className="p-10 pt-12 flex-1 flex flex-col">
@@ -125,6 +125,31 @@ export default function MarketingHome() {
                                     </li>
                                 </ul>
                                 <Button variant="outline" className="w-full mt-auto">Create Personal Account</Button>
+                            </CardContent>
+                        </Card>
+
+                        {/* For Non-Profits */}
+                        <Card className="bg-white dark:bg-slate-800 border-slate-200 dark:border-slate-700 shadow-xl group rounded-[2rem] flex flex-col h-full">
+                            <CardContent className="p-10 pt-12 flex-1 flex flex-col">
+                                <div className="w-14 h-14 rounded-2xl bg-emerald-100 dark:bg-emerald-900/50 flex items-center justify-center mb-8 text-emerald-600 dark:text-emerald-400 group-hover:scale-110 transition-transform shadow-sm">
+                                    <Globe className="w-7 h-7" />
+                                </div>
+                                <h3 className="text-2xl font-bold text-slate-900 dark:text-white mb-4">For Non-Profits</h3>
+                                <ul className="space-y-3 mb-8 flex-1">
+                                    <li className="flex items-start gap-3 text-slate-600 dark:text-slate-300">
+                                        <CheckCircle2 className="w-5 h-5 text-indigo-500 shrink-0 mt-0.5" />
+                                        <span>Replace paper clipboards with digital intake pipelines.</span>
+                                    </li>
+                                    <li className="flex items-start gap-3 text-slate-600 dark:text-slate-300">
+                                        <CheckCircle2 className="w-5 h-5 text-indigo-500 shrink-0 mt-0.5" />
+                                        <span>Save thousands of hours of manual volunteer data entry.</span>
+                                    </li>
+                                    <li className="flex items-start gap-3 text-slate-600 dark:text-slate-300">
+                                        <CheckCircle2 className="w-5 h-5 text-indigo-500 shrink-0 mt-0.5" />
+                                        <span>Tested and proven to reduce operational costs locally.</span>
+                                    </li>
+                                </ul>
+                                <Button variant="outline" className="w-full mt-auto border-emerald-500 text-emerald-600 hover:bg-emerald-50 dark:hover:bg-emerald-900/30">Learn More</Button>
                             </CardContent>
                         </Card>
 
