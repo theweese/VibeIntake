@@ -4,10 +4,12 @@ import { useState } from 'react'
 import { Card, CardHeader, CardTitle, CardContent, Button, PageHeader, Input, Badge } from '@/components/ui'
 import { FileScan, MessageSquare, Bot, User as UserIcon, UploadCloud, ShieldCheck, Lock, CheckCircle2, FileJson, ArrowRight, Loader2, RefreshCcw } from 'lucide-react'
 import { motion, AnimatePresence } from 'framer-motion'
+import { useRouter } from 'next/navigation'
 
 type DemoStep = 'method' | 'expertise' | 'chat' | 'captcha' | 'preview' | 'upload_scanner'
 
 export default function DemoPage() {
+    const router = useRouter()
     const [step, setStep] = useState<DemoStep>('method')
     const [expertise, setExpertise] = useState<'beginner' | 'expert' | null>(null)
     const [chatMessages, setChatMessages] = useState<{ role: 'ai' | 'user', text: string }[]>([])
@@ -323,7 +325,7 @@ export default function DemoPage() {
                                             <MessageSquare className="w-4 h-4 mr-2" />
                                             Continue Refining ({3 - iterationCount} left)
                                         </Button>
-                                        <Button variant="primary" className="w-full h-12 shadow-md hover:shadow-lg transition-shadow bg-indigo-600 hover:bg-indigo-700 text-white">
+                                        <Button variant="primary" onClick={() => router.push('/signup')} className="w-full h-12 shadow-md hover:shadow-lg transition-shadow bg-indigo-600 hover:bg-indigo-700 text-white">
                                             Sign Up to Deploy Form
                                         </Button>
                                     </div>
