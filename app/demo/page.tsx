@@ -327,6 +327,7 @@ export default function DemoPage() {
                                         </Button>
                                         <Button variant="primary" onClick={() => {
                                             localStorage.setItem('vibe-demo-form', 'Interactive Custom Form')
+                                            localStorage.setItem('vibe-demo-fields', JSON.stringify(generatedFields))
                                             router.push('/signup')
                                         }} className="w-full h-12 shadow-md hover:shadow-lg transition-shadow bg-indigo-600 hover:bg-indigo-700 text-white">
                                             Sign Up to Deploy Form

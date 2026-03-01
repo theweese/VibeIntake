@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Card, CardContent, Button, Input } from '@/components/ui'
 import { Sparkles, Save, Undo, LayoutTemplate, Send, User, ChevronRight } from 'lucide-react'
 import { motion } from 'framer-motion'
@@ -16,6 +16,25 @@ export default function AIFormEditor() {
         { id: 'f2', label: "Patient Last Name", required: true },
         { id: 'f3', label: "Date of Birth", type: "date" }
     ])
+
+    useEffect(() => {
+        const storedFields = localStorage.getItem('vibe-demo-fields')
+        if (storedFields) {
+            try {
+                const parsed = JSON.parse(storedFields)
+                if (Array.isArray(parsed) && parsed.length > 0) {
+                    setFormLayout(parsed.map((f: any, i: number) => ({
+                        id: `f_gen_${i}`,
+                        label: f.label,
+                        type: f.type,
+                        required: true
+                    })))
+                }
+            } catch (e) {
+                console.error("Failed to parse demo fields", e)
+            }
+        }
+    }, [])
 
     const handleAiEdit = (e: React.FormEvent) => {
         e.preventDefault()
