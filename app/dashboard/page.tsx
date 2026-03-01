@@ -1,8 +1,8 @@
 "use client"
 
 import { useEffect, useState } from 'react'
-import { Card, CardHeader, CardTitle, CardContent, Button, Input } from '@/components/ui'
-import { Building2, Users, FileStack, PlusCircle, Activity, Settings, LayoutGrid, CheckCircle2, ChevronRight, Hash, LogOut, FilePlus } from 'lucide-react'
+import { Card, CardHeader, CardTitle, CardContent, Button, Input, Badge } from '@/components/ui'
+import { Building2, Users, FileStack, PlusCircle, Activity, Settings, LayoutGrid, CheckCircle2, ChevronRight, Hash, LogOut, FilePlus, ShieldAlert, FileWarning, Webhook, Database } from 'lucide-react'
 import { motion } from 'framer-motion'
 import Link from 'next/link'
 import toast from 'react-hot-toast'
@@ -154,6 +154,39 @@ export default function DashboardPage() {
                                 </div>
                             </CardContent>
                         </Card>
+
+                        {/* Review Queue */}
+                        <Card className="shadow-lg border-rose-200 dark:border-rose-900/50 relative overflow-hidden">
+                            <div className="absolute top-0 right-0 w-32 h-32 bg-rose-500/10 dark:bg-rose-500/5 blur-3xl rounded-full pointer-events-none" />
+                            <CardHeader className="border-b border-slate-100 dark:border-slate-800 pb-4 bg-rose-50/50 dark:bg-rose-950/10">
+                                <CardTitle className="text-lg flex items-center justify-between">
+                                    <div className="flex items-center gap-2">
+                                        <ShieldAlert className="w-5 h-5 text-rose-500" /> Human Review Queue
+                                    </div>
+                                    <Badge variant="error" className="bg-rose-100 text-rose-700 dark:bg-rose-900/30 dark:text-rose-400">1 Pending Review</Badge>
+                                </CardTitle>
+                            </CardHeader>
+                            <CardContent className="p-0">
+                                <div className="p-5 flex items-center justify-between hover:bg-slate-50 dark:hover:bg-slate-900/50 transition-colors">
+                                    <div className="flex items-start gap-4">
+                                        <div className="w-10 h-10 rounded-xl bg-rose-100 dark:bg-rose-900/30 flex items-center justify-center text-rose-600 dark:text-rose-400 border border-rose-200 dark:border-rose-800 shadow-sm shrink-0">
+                                            <FileWarning className="w-4 h-4" />
+                                        </div>
+                                        <div>
+                                            <h5 className="font-bold text-slate-900 dark:text-white">Historical Intake Log #409</h5>
+                                            <div className="flex items-center gap-2 mt-1">
+                                                <span className="text-xs text-rose-600 dark:text-rose-400 font-medium tracking-wide">AI Confidence: 72%</span>
+                                                <span className="text-slate-300 dark:text-slate-700">•</span>
+                                                <span className="text-xs text-slate-500 font-mono tracking-wide px-1.5 py-0.5 bg-slate-100 dark:bg-slate-800 rounded">Handwriting Unclear</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <Button size="sm" variant="outline" className="border-rose-200 dark:border-rose-800 text-rose-600 dark:text-rose-400 hover:bg-rose-50 dark:hover:bg-rose-900/20 shadow-sm text-xs h-8">
+                                        Review Now
+                                    </Button>
+                                </div>
+                            </CardContent>
+                        </Card>
                     </div>
 
                     {/* Right Panel */}
@@ -206,6 +239,43 @@ export default function DashboardPage() {
                                             </div>
                                         </div>
                                     ))}
+                                </div>
+                            </CardContent>
+                        </Card>
+
+                        {/* Integrations Mock */}
+                        <Card className="shadow-lg border-slate-200 dark:border-slate-800">
+                            <CardHeader className="pb-3 flex flex-row items-center justify-between border-b border-slate-100 dark:border-slate-800">
+                                <CardTitle className="text-base font-bold flex items-center gap-2">
+                                    <Webhook className="w-4 h-4 text-emerald-500" /> Integrations
+                                </CardTitle>
+                            </CardHeader>
+                            <CardContent className="p-0">
+                                <div className="divide-y divide-slate-100 dark:divide-slate-800">
+                                    <div className="flex items-center gap-3 p-4 hover:bg-slate-50 dark:hover:bg-slate-900/50 transition-colors">
+                                        <div className="w-8 h-8 rounded-full bg-emerald-100 dark:bg-emerald-900/30 border border-emerald-200 dark:border-emerald-800 flex items-center justify-center text-emerald-600 dark:text-emerald-400 shrink-0 shadow-sm">
+                                            <Database className="w-3.5 h-3.5" />
+                                        </div>
+                                        <div className="min-w-0 flex-1">
+                                            <p className="text-sm font-bold text-slate-900 dark:text-white truncate">Internal Postgres DB</p>
+                                            <p className="text-xs text-emerald-600 dark:text-emerald-400 tracking-wide font-medium">Syncing live</p>
+                                        </div>
+                                        <div className="w-8 h-4 bg-emerald-500 rounded-full relative shadow-inner">
+                                            <div className="w-3 h-3 rounded-full bg-white absolute right-0.5 top-0.5 shadow-sm"></div>
+                                        </div>
+                                    </div>
+                                    <div className="flex items-center gap-3 p-4 hover:bg-slate-50 dark:hover:bg-slate-900/50 transition-colors cursor-pointer">
+                                        <div className="w-8 h-8 rounded-full bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 flex items-center justify-center text-slate-500 shrink-0 shadow-sm">
+                                            <Webhook className="w-3.5 h-3.5" />
+                                        </div>
+                                        <div className="min-w-0 flex-1">
+                                            <p className="text-sm font-bold text-slate-900 dark:text-white truncate">Custom Webhook</p>
+                                            <p className="text-xs text-slate-500">Not configured</p>
+                                        </div>
+                                        <Button variant="ghost" className="w-6 h-6 p-0 hover:bg-slate-200 dark:hover:bg-slate-700">
+                                            <ChevronRight className="w-4 h-4 text-slate-400" />
+                                        </Button>
+                                    </div>
                                 </div>
                             </CardContent>
                         </Card>
