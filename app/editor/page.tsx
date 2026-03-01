@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import { Card, CardContent, Button, Input } from '@/components/ui'
-import { Sparkles, Save, Undo, LayoutTemplate, Send, User, ChevronRight, X, Copy, Check, Link as LinkIcon, Code } from 'lucide-react'
+import { Sparkles, Save, Undo, LayoutTemplate, Send, User, ChevronRight, X, Copy, Check, Link as LinkIcon, Code, ShieldAlert } from 'lucide-react'
 import { motion, AnimatePresence } from 'framer-motion'
 import toast from 'react-hot-toast'
 
@@ -120,14 +120,32 @@ export default function AIFormEditor() {
                                             layout
                                             initial={{ opacity: 0, scale: 0.95 }}
                                             animate={{ opacity: 1, scale: 1 }}
-                                            className="group"
+                                            className="w-full"
                                         >
-                                            <label className="text-sm font-semibold text-slate-700 dark:text-slate-300 block mb-2 flex justify-between">
-                                                {field.label} {field.required && <span className="text-rose-500">*</span>}
-                                            </label>
-                                            <div className="w-full h-11 border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-950 rounded-xl px-3 flex items-center shadow-sm">
-                                                {field.type === 'date' ? 'mm/dd/yyyy' : ''}
-                                            </div>
+                                            {field.type === 'sensitive_id' ? (
+                                                <div className="relative mt-2 mb-2 border border-rose-500/30 dark:border-rose-500/20 bg-rose-50/30 dark:bg-rose-950/20 rounded-xl p-4 shadow-sm animate-in fade-in duration-700">
+                                                    <div className="absolute -top-3 right-4 bg-rose-500 text-white text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-wider flex items-center gap-1 shadow-sm">
+                                                        <ShieldAlert className="w-3 h-3" /> PII Shield Active
+                                                    </div>
+                                                    <Input
+                                                        density="compact"
+                                                        label={field.label}
+                                                        type="password"
+                                                        placeholder="***-**-####"
+                                                        className="border-rose-200 dark:border-rose-900 bg-white dark:bg-slate-950 focus:ring-rose-400"
+                                                    />
+                                                </div>
+                                            ) : (
+                                                <div className="relative">
+                                                    {field.required && <span className="absolute top-0 right-1 text-rose-500 font-bold text-sm">*</span>}
+                                                    <Input
+                                                        density="compact"
+                                                        label={field.label}
+                                                        placeholder={field.type === 'date' ? 'mm/dd/yyyy' : ''}
+                                                        type={field.type === 'date' ? 'date' : (field.type && field.type !== 'sensitive_id' ? field.type : 'text')}
+                                                    />
+                                                </div>
+                                            )}
                                         </motion.div>
                                     ))}
                                 </motion.div>
