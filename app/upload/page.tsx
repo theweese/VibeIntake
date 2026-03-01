@@ -578,7 +578,11 @@ END:VCALENDAR`;
                                                                 <p className="text-white font-medium">Create a free account to secure your permanent subdomain and route submissions.</p>
                                                             </div>
                                                             <div className="w-full">
-                                                                <Button onClick={() => router.push('/signup')} className="h-12 w-full bg-white text-indigo-900 hover:bg-slate-100 font-bold text-base shadow-lg cursor-pointer transform hover:scale-105 transition-all">
+                                                                <Button onClick={() => {
+                                                                    const formName = detectedForm === 'adopt-a-family' ? 'Adopt A Family Reg' : (detectedForm === 'sterling-cooper' ? 'Sterling Cooper Enterprise' : 'Custom AI Intake Form');
+                                                                    localStorage.setItem('vibe-demo-form', formName);
+                                                                    router.push('/signup');
+                                                                }} className="h-12 w-full bg-white text-indigo-900 hover:bg-slate-100 font-bold text-base shadow-lg cursor-pointer transform hover:scale-105 transition-all">
                                                                     Create Account & Deploy
                                                                 </Button>
                                                             </div>

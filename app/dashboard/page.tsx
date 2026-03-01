@@ -15,7 +15,7 @@ type SessionData = {
 
 export default function DashboardPage() {
     const [session, setSession] = useState<SessionData | null>(null)
-    const [forms, setForms] = useState(['Employee Referral App', 'HIPAA Release Form'])
+    const [forms, setForms] = useState<string[]>([])
     const [users, setUsers] = useState<string[]>([])
     const [newUser, setNewUser] = useState('')
 
@@ -25,6 +25,11 @@ export default function DashboardPage() {
             const parsed = JSON.parse(data)
             setSession(parsed)
             setUsers([parsed.user, 'System Admin'])
+
+            const demoForm = localStorage.getItem('vibe-demo-form')
+            if (demoForm) {
+                setForms([demoForm])
+            }
         } else {
             // Redirect to login if unauthorized
             window.location.href = '/signup'
