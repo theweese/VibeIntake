@@ -85,7 +85,7 @@ export function Navbar() {
                                 </button>
                             )}
 
-                            <Link href="/signup" className="text-sm font-semibold text-indigo-600 hover:text-indigo-700 dark:text-indigo-400 dark:hover:text-indigo-300 transition-colors flex items-center gap-2">
+                            <Link href="/signup?mode=login" className="text-sm font-semibold text-indigo-600 hover:text-indigo-700 dark:text-indigo-400 dark:hover:text-indigo-300 transition-colors flex items-center gap-2">
                                 Login <LogIn className="w-4 h-4" />
                             </Link>
                             <Link href="/signup">

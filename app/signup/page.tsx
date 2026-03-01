@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Card, CardHeader, CardTitle, CardContent, Button, Input } from '@/components/ui'
 import { Fingerprint, Building2, User, Mail, Lock, ArrowRight, Loader2 } from 'lucide-react'
 import { motion, AnimatePresence } from 'framer-motion'
@@ -10,12 +10,22 @@ import toast from 'react-hot-toast'
 export default function SignupPage() {
     const [isSubmitting, setIsSubmitting] = useState(false)
     const [isEmailSent, setIsEmailSent] = useState(false)
+    const [mode, setMode] = useState<'signup' | 'login'>('signup')
     const [formData, setFormData] = useState({
         firstName: '',
         lastName: '',
         email: '',
         company: ''
     })
+
+    useEffect(() => {
+        if (typeof window !== 'undefined') {
+            const params = new URLSearchParams(window.location.search)
+            if (params.get('mode') === 'login') {
+                setMode('login')
+            }
+        }
+    }, [])
 
     const handleSsoClick = (provider: string) => {
         toast('Third-party local sign-ups with ' + provider + ' are currently in development as we finalize our infrastructure.', {
@@ -56,8 +66,12 @@ export default function SignupPage() {
         setIsSubmitting(true)
         setTimeout(() => {
             if (typeof window !== 'undefined') {
+                const userDisplayName = mode === 'login' && (!formData.firstName)
+                    ? 'Welcome Back'
+                    : (formData.firstName + ' ' + formData.lastName).trim() || 'Demo User';
+
                 localStorage.setItem('vibe-session', JSON.stringify({
-                    user: formData.firstName + ' ' + formData.lastName,
+                    user: userDisplayName,
                     email: formData.email,
                     company: formData.company || 'My Organization'
                 }))
@@ -78,8 +92,12 @@ export default function SignupPage() {
                     <div className="inline-flex p-3 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-2xl shadow-lg mb-4">
                         <Fingerprint className="w-8 h-8 text-white" />
                     </div>
-                    <h1 className="text-3xl font-black text-slate-900 dark:text-white mb-2">Create an Account</h1>
-                    <p className="text-slate-500">Set up your workspace and begin deploying.</p>
+                    <h1 className="text-3xl font-black text-slate-900 dark:text-white mb-2">
+                        {mode === 'signup' ? 'Create an Account' : 'Welcome Back'}
+                    </h1>
+                    <p className="text-slate-500">
+                        {mode === 'signup' ? 'Set up your workspace and begin deploying.' : 'Sign in to access your dashboard.'}
+                    </p>
                 </div>
 
                 <Card className="border-slate-200 dark:border-slate-800 shadow-xl overflow-hidden">
@@ -114,19 +132,21 @@ export default function SignupPage() {
                                     </div>
 
                                     <form onSubmit={handleSubmit} className="space-y-4">
-                                        <div className="grid grid-cols-2 gap-4">
-                                            <div className="space-y-1.5">
-                                                <label className="text-xs font-semibold text-slate-600 dark:text-slate-400">First Name</label>
-                                                <div className="relative">
-                                                    <Input name="firstName" value={formData.firstName} onChange={handleChange} required className="pl-9 bg-slate-50 dark:bg-slate-950/50" placeholder="Jane" />
-                                                    <User className="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" />
+                                        {mode === 'signup' && (
+                                            <div className="grid grid-cols-2 gap-4">
+                                                <div className="space-y-1.5">
+                                                    <label className="text-xs font-semibold text-slate-600 dark:text-slate-400">First Name</label>
+                                                    <div className="relative">
+                                                        <Input name="firstName" value={formData.firstName} onChange={handleChange} required className="pl-9 bg-slate-50 dark:bg-slate-950/50" placeholder="Jane" />
+                                                        <User className="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" />
+                                                    </div>
+                                                </div>
+                                                <div className="space-y-1.5">
+                                                    <label className="text-xs font-semibold text-slate-600 dark:text-slate-400">Last Name</label>
+                                                    <Input name="lastName" value={formData.lastName} onChange={handleChange} required className="bg-slate-50 dark:bg-slate-950/50" placeholder="Doe" />
                                                 </div>
                                             </div>
-                                            <div className="space-y-1.5">
-                                                <label className="text-xs font-semibold text-slate-600 dark:text-slate-400">Last Name</label>
-                                                <Input name="lastName" value={formData.lastName} onChange={handleChange} required className="bg-slate-50 dark:bg-slate-950/50" placeholder="Doe" />
-                                            </div>
-                                        </div>
+                                        )}
 
                                         <div className="space-y-1.5">
                                             <label className="text-xs font-semibold text-slate-600 dark:text-slate-400">Email Address</label>
@@ -136,17 +156,26 @@ export default function SignupPage() {
                                             </div>
                                         </div>
 
-                                        <div className="space-y-1.5 pt-2">
-                                            <label className="text-xs font-semibold text-indigo-600 dark:text-indigo-400 flex items-center gap-1.5">
-                                                <Building2 className="w-4 h-4" /> Company Name <span className="text-slate-400 dark:text-slate-500 font-normal ml-auto">(Optional)</span>
-                                            </label>
-                                            <Input name="company" value={formData.company} onChange={handleChange} className="bg-indigo-50/50 dark:bg-indigo-950/20 border-indigo-200 dark:border-indigo-800" placeholder="Acme Corp" />
-                                        </div>
+                                        {mode === 'signup' && (
+                                            <div className="space-y-1.5 pt-2">
+                                                <label className="text-xs font-semibold text-indigo-600 dark:text-indigo-400 flex items-center gap-1.5">
+                                                    <Building2 className="w-4 h-4" /> Company Name <span className="text-slate-400 dark:text-slate-500 font-normal ml-auto">(Optional)</span>
+                                                </label>
+                                                <Input name="company" value={formData.company} onChange={handleChange} className="bg-indigo-50/50 dark:bg-indigo-950/20 border-indigo-200 dark:border-indigo-800" placeholder="Acme Corp" />
+                                            </div>
+                                        )}
 
                                         <Button type="submit" disabled={isSubmitting} className="w-full h-12 bg-indigo-600 hover:bg-indigo-700 text-white mt-4 font-bold rounded-xl transition-all shadow-md flex gap-2">
-                                            {isSubmitting ? <Loader2 className="w-5 h-5 animate-spin" /> : <>Send Verification Link <ArrowRight className="w-4 h-4" /></>}
+                                            {isSubmitting ? <Loader2 className="w-5 h-5 animate-spin" /> : <>{mode === 'signup' ? 'Send Verification Link' : 'Send Login Link'} <ArrowRight className="w-4 h-4" /></>}
                                         </Button>
                                     </form>
+
+                                    <p className="mt-8 text-center text-sm text-slate-500 dark:text-slate-400 flex items-center justify-center gap-2">
+                                        {mode === 'signup' ? 'Already have an account? ' : "Don't have an account? "}
+                                        <button type="button" onClick={() => setMode(mode === 'signup' ? 'login' : 'signup')} className="text-indigo-600 dark:text-indigo-400 font-bold hover:underline">
+                                            {mode === 'signup' ? 'Log in' : 'Sign up'}
+                                        </button>
+                                    </p>
                                 </motion.div>
                             ) : (
                                 <motion.div key="success" initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} className="text-center py-6">
