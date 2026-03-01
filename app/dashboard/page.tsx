@@ -88,31 +88,31 @@ export default function DashboardPage() {
                         {/* Summary Cards */}
                         <div className="grid grid-cols-2 lg:grid-cols-3 gap-4">
                             <Card className="border-none shadow-md bg-white dark:bg-slate-900">
-                                <CardContent className="p-6">
+                                <div className="p-6">
                                     <div className="w-10 h-10 bg-indigo-100 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400 rounded-xl flex items-center justify-center mb-4">
                                         <FileStack className="w-5 h-5" />
                                     </div>
                                     <p className="text-sm font-bold text-slate-500">Active Forms</p>
                                     <h4 className="text-3xl font-black text-slate-900 dark:text-white mt-1">{forms.length}</h4>
-                                </CardContent>
+                                </div>
                             </Card>
                             <Card className="border-none shadow-md bg-white dark:bg-slate-900">
-                                <CardContent className="p-6">
+                                <div className="p-6">
                                     <div className="w-10 h-10 bg-green-100 dark:bg-green-900/30 text-green-600 dark:text-green-400 rounded-xl flex items-center justify-center mb-4">
                                         <Hash className="w-5 h-5" />
                                     </div>
                                     <p className="text-sm font-bold text-slate-500">Monthly Submissions</p>
                                     <h4 className="text-3xl font-black text-slate-900 dark:text-white mt-1">42</h4>
-                                </CardContent>
+                                </div>
                             </Card>
                             <Card className="border-none shadow-md bg-white dark:bg-slate-900 hidden lg:block">
-                                <CardContent className="p-6">
+                                <div className="p-6">
                                     <div className="w-10 h-10 bg-fuchsia-100 dark:bg-fuchsia-900/30 text-fuchsia-600 dark:text-fuchsia-400 rounded-xl flex items-center justify-center mb-4">
                                         <Users className="w-5 h-5" />
                                     </div>
                                     <p className="text-sm font-bold text-slate-500">Workspace Members</p>
                                     <h4 className="text-3xl font-black text-slate-900 dark:text-white mt-1">{users.length}</h4>
-                                </CardContent>
+                                </div>
                             </Card>
                         </div>
 
@@ -195,14 +195,14 @@ export default function DashboardPage() {
                         <Card className="bg-indigo-600 border-none shadow-xl text-white relative overflow-hidden">
                             <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20 mix-blend-overlay"></div>
                             <div className="absolute -top-16 -right-16 w-48 h-48 bg-white/10 blur-3xl rounded-full" />
-                            <CardContent className="p-8 relative z-10">
+                            <div className="p-8 relative z-10">
                                 <p className="text-indigo-200 font-bold uppercase tracking-wider text-xs mb-2">Signed in as</p>
                                 <h3 className="text-2xl font-black mb-1">{session.user}</h3>
                                 <p className="text-sm font-medium text-indigo-100 mb-6 font-mono opacity-80">{session.email}</p>
                                 <Button className="w-full bg-white text-indigo-600 hover:bg-slate-100 gap-2 h-10" variant="secondary">
                                     Manage Profile
                                 </Button>
-                            </CardContent>
+                            </div>
                         </Card>
 
                         {/* Team Access */}
