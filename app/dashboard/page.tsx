@@ -136,7 +136,7 @@ export default function DashboardPage() {
                             <CardContent className="p-0">
                                 <div className="divide-y divide-slate-100 dark:divide-slate-800">
                                     {forms.map((form, i) => (
-                                        <div key={i} className="p-5 flex items-center justify-between group hover:bg-slate-50 dark:hover:bg-slate-900/50 transition-colors">
+                                        <div key={i} onClick={() => window.location.href = '/editor'} className="p-5 flex items-center justify-between group hover:bg-slate-50 dark:hover:bg-slate-900/50 transition-colors cursor-pointer">
                                             <div className="flex items-start gap-4">
                                                 <div className="w-10 h-10 rounded-xl bg-slate-100 dark:bg-slate-800 flex items-center justify-center text-slate-400 border border-slate-200 dark:border-slate-700 shadow-sm shrink-0">
                                                     <FileStack className="w-4 h-4" />
@@ -151,7 +151,7 @@ export default function DashboardPage() {
                                                     </div>
                                                 </div>
                                             </div>
-                                            <Button variant="ghost" className="shrink-0 group-hover:bg-slate-200 dark:group-hover:bg-slate-800 w-8 h-8 p-0">
+                                            <Button variant="ghost" className="shrink-0 group-hover:bg-slate-200 dark:group-hover:bg-slate-800 w-8 h-8 p-0" onClick={(e) => { e.stopPropagation(); window.location.href = '/editor'; }}>
                                                 <ChevronRight className="w-5 h-5 text-slate-400 group-hover:text-indigo-500" />
                                             </Button>
                                         </div>
