@@ -68,22 +68,22 @@ export default function SignupPage() {
                 <Card className="border-slate-200 dark:border-slate-800 shadow-xl overflow-hidden">
                     <CardContent className="p-8">
                         {/* Fake SSO Buttons */}
-                        <div className="space-y-3 mb-6">
+                        <div className="flex flex-col gap-3 mb-8">
                             <Button
                                 variant="outline"
-                                className="w-full h-11 border-slate-300 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-300 relative overflow-hidden group opacity-50 cursor-not-allowed"
+                                className="w-full h-11 border-slate-200 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-300 flex items-center justify-center gap-3 opacity-50 cursor-not-allowed"
                                 onClick={() => handleSsoClick('Google')}
                             >
-                                <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/google/google-original.svg" className="w-5 h-5 mr-3 grayscale" alt="Google" />
-                                Continue with Google (Coming Soon)
+                                <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/google/google-original.svg" className="w-5 h-5 grayscale" alt="Google" />
+                                <span className="font-medium">Continue with Google (Coming Soon)</span>
                             </Button>
                             <Button
                                 variant="outline"
-                                className="w-full h-11 border-slate-300 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-300 relative overflow-hidden group opacity-50 cursor-not-allowed"
+                                className="w-full h-11 border-slate-200 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-300 flex items-center justify-center gap-3 opacity-50 cursor-not-allowed"
                                 onClick={() => handleSsoClick('Microsoft 365')}
                             >
-                                <img src="https://upload.wikimedia.org/wikipedia/commons/4/44/Microsoft_logo.svg" className="w-5 h-5 mr-3 grayscale" alt="Microsoft" />
-                                Continue with Microsoft 365 (Coming Soon)
+                                <img src="https://upload.wikimedia.org/wikipedia/commons/4/44/Microsoft_logo.svg" className="w-5 h-5 grayscale" alt="Microsoft" />
+                                <span className="font-medium">Continue with Microsoft 365 (Coming Soon)</span>
                             </Button>
                         </div>
 
