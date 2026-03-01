@@ -69,7 +69,7 @@ Input.displayName = "Input"
 // --- Card Component ---
 export function Card({ className = "", children, ...props }: React.HTMLAttributes<HTMLDivElement>) {
     return (
-        <div className={`rounded-2xl border border-slate-200/60 dark:border-slate-800/60 bg-white/70 dark:bg-slate-900/40 backdrop-blur-xl text-slate-950 dark:text-slate-50 shadow-sm ${className}`} {...props}>
+        <div className={cn("rounded-2xl border border-slate-200/60 dark:border-slate-800/60 bg-white/70 dark:bg-slate-900/40 backdrop-blur-xl text-slate-950 dark:text-slate-50 shadow-sm", className)} {...props}>
             {children}
         </div>
     )
