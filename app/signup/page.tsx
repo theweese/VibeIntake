@@ -129,9 +129,9 @@ export default function SignupPage() {
 
                             <div className="space-y-1.5 pt-2">
                                 <label className="text-xs font-semibold text-indigo-600 dark:text-indigo-400 flex items-center gap-1.5">
-                                    <Building2 className="w-4 h-4" /> Workspace/Company Name
+                                    <Building2 className="w-4 h-4" /> Company Name <span className="text-slate-400 dark:text-slate-500 font-normal ml-auto">(Optional)</span>
                                 </label>
-                                <Input name="company" value={formData.company} onChange={handleChange} required className="bg-indigo-50/50 dark:bg-indigo-950/20 border-indigo-200 dark:border-indigo-800" placeholder="Acme Corp" />
+                                <Input name="company" value={formData.company} onChange={handleChange} className="bg-indigo-50/50 dark:bg-indigo-950/20 border-indigo-200 dark:border-indigo-800" placeholder="Acme Corp" />
                             </div>
 
                             <Button type="submit" disabled={isSubmitting} className="w-full h-12 bg-indigo-600 hover:bg-indigo-700 text-white mt-4 font-bold rounded-xl transition-all shadow-md flex gap-2">
