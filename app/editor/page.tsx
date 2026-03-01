@@ -6,6 +6,8 @@ import { Sparkles, Save, Undo, LayoutTemplate, Send, User, ChevronRight, X, Copy
 import { motion, AnimatePresence } from 'framer-motion'
 import toast from 'react-hot-toast'
 
+type FormField = { id: string; label: string; type?: string; required?: boolean; };
+
 export default function AIFormEditor() {
     const [chatInput, setChatInput] = useState('')
     const [isAiThinking, setIsAiThinking] = useState(false)
@@ -13,7 +15,7 @@ export default function AIFormEditor() {
     const [copied, setCopied] = useState<string | null>(null)
 
     // Simulated State of the Output Component
-    const [formLayout, setFormLayout] = useState([
+    const [formLayout, setFormLayout] = useState<FormField[]>([
         { id: 'f1', label: "Patient First Name", required: true },
         { id: 'f2', label: "Patient Last Name", required: true },
         { id: 'f3', label: "Date of Birth", type: "date" }
@@ -21,6 +23,8 @@ export default function AIFormEditor() {
 
     useEffect(() => {
         const storedFields = localStorage.getItem('vibe-demo-fields')
+        const demoFormName = localStorage.getItem('vibe-demo-form')
+
         if (storedFields) {
             try {
                 const parsed = JSON.parse(storedFields)
@@ -31,10 +35,31 @@ export default function AIFormEditor() {
                         type: f.type,
                         required: true
                     })))
+                    return; // Exit early if we loaded custom fields
                 }
             } catch (e) {
                 console.error("Failed to parse demo fields", e)
             }
+        }
+
+        // Fallbacks for the File Upload Demo Pipeline Route
+        if (demoFormName === 'Adopt A Family Reg') {
+            setFormLayout([
+                { id: 'aaf_1', label: "Parent / Guardian Name", required: true },
+                { id: 'aaf_2', label: "Participant DOB / SSN", type: "sensitive_id" },
+                { id: 'aaf_3', label: "Address City & Zip", required: true },
+                { id: 'aaf_4', label: "Number in Household", type: "number" },
+                { id: 'aaf_5', label: "Total Family Income Bracket", type: "text" },
+                { id: 'aaf_6', label: "Child's First & Last Name", required: true },
+                { id: 'aaf_7', label: "Child Shoe Size", type: "text" }
+            ])
+        } else if (demoFormName === 'Sterling Cooper Enterprise') {
+            setFormLayout([
+                { id: 'sc_1', label: "Full Legal Name", required: true },
+                { id: 'sc_2', label: "Official Title / Department", required: true },
+                { id: 'sc_3', label: "Date of Incident", type: "date" },
+                { id: 'sc_4', label: "Authorized Signature", type: "text", required: true }
+            ])
         }
     }, [])
 
