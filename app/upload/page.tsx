@@ -5,8 +5,10 @@ import { Card, CardHeader, CardTitle, CardContent, Button, PageHeader, Badge, In
 import { UploadCloud, CheckCircle2, Sparkles, Loader2, FileScan, FileText, ArrowRight, ShieldAlert, Bot, ShieldCheck, RefreshCcw, Calendar, Bell, Smartphone, CalendarPlus } from 'lucide-react'
 import { motion, AnimatePresence } from 'framer-motion'
 import Link from 'next/link'
+import { useRouter } from 'next/navigation'
 
 export default function UploadPage() {
+    const router = useRouter()
     const [file, setFile] = useState<File | null>(null)
     const [uploadState, setUploadState] = useState<'idle' | 'uploading' | 'scanning' | 'morphing' | 'done'>('idle')
     const [isLoggedIn, setIsLoggedIn] = useState(false)
@@ -575,11 +577,11 @@ END:VCALENDAR`;
                                                                 <ShieldCheck className="w-10 h-10 text-indigo-400 mx-auto mb-2" />
                                                                 <p className="text-white font-medium">Create a free account to secure your permanent subdomain and route submissions.</p>
                                                             </div>
-                                                            <Link href="/signup">
-                                                                <Button className="h-12 w-full bg-white text-indigo-900 hover:bg-slate-100 font-bold text-base shadow-lg cursor-pointer transform hover:scale-105 transition-all">
+                                                            <div className="w-full">
+                                                                <Button onClick={() => router.push('/signup')} className="h-12 w-full bg-white text-indigo-900 hover:bg-slate-100 font-bold text-base shadow-lg cursor-pointer transform hover:scale-105 transition-all">
                                                                     Create Account & Deploy
                                                                 </Button>
-                                                            </Link>
+                                                            </div>
                                                         </div>
                                                     )}
                                                 </div>
