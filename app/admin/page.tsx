@@ -9,7 +9,7 @@ import toast from 'react-hot-toast'
 // Mock Data
 const INITIAL_CLIENTS = [
     { id: '1', name: 'Sterling Cooper Intake', type: 'Enterprise', users: 14, status: 'Active', plan: 'Enterprise SLA' },
-    { id: '2', name: 'Dunder Mifflin 5K', type: 'Non-Profit', users: 8, status: 'Active', plan: 'Non-Profit Tier' },
+    { id: '2', name: 'Adopt A Family', type: 'Non-Profit', users: 8, status: 'Active', plan: 'Non-Profit Tier' },
     { id: '3', name: 'Patient Registration', type: 'Medical', users: 3, status: 'Draft', plan: 'Pro' },
     { id: '4', name: 'City Archive Project', type: 'Enterprise', users: 12, status: 'Suspended', plan: 'Custom' }
 ]

@@ -15,7 +15,7 @@ export default function UploadPage() {
     const [scanProgress, setScanProgress] = useState(0)
     const [fileName, setFileName] = useState('')
     const [pasteText, setPasteText] = useState('')
-    const [detectedForm, setDetectedForm] = useState<'sterling-cooper' | 'dunder-mifflin-5k' | 'basic' | 'grandma-calendar'>('basic')
+    const [detectedForm, setDetectedForm] = useState<'sterling-cooper' | 'adopt-a-family' | 'basic' | 'grandma-calendar'>('basic')
     const fileInputRef = useRef<HTMLInputElement>(null)
 
     // Interactive Demo Chat State
@@ -100,8 +100,8 @@ export default function UploadPage() {
             const lowerName = rawName.toLowerCase()
             if (file.type.includes('image') || lowerName.includes('jpg') || lowerName.includes('png') || lowerName.includes('jpeg') || lowerName.includes('afl') || lowerName.includes('sterling')) {
                 setDetectedForm('sterling-cooper')
-            } else if (lowerName.includes('doc') || lowerName.includes('pdf') || lowerName.includes('sole') || lowerName.includes('christ') || lowerName.includes('dunder') || lowerName.includes('registration')) {
-                setDetectedForm('dunder-mifflin-5k')
+            } else if (lowerName.includes('doc') || lowerName.includes('pdf') || lowerName.includes('sole') || lowerName.includes('christ') || lowerName.includes('adopt') || lowerName.includes('registration')) {
+                setDetectedForm('adopt-a-family')
             } else {
                 setDetectedForm('basic')
             }
@@ -116,8 +116,8 @@ export default function UploadPage() {
         const lowerStr = pasteText.toLowerCase()
         if (lowerStr.includes('afl') || lowerStr.includes('cio') || lowerStr.includes('sterling') || lowerStr.includes('community') || lowerStr.includes('service')) {
             setDetectedForm('sterling-cooper')
-        } else if (lowerStr.includes('sole') || lowerStr.includes('shoe') || lowerStr.includes('christ') || lowerStr.includes('dunder') || lowerStr.includes('registration') || lowerStr.includes('release')) {
-            setDetectedForm('dunder-mifflin-5k')
+        } else if (lowerStr.includes('sole') || lowerStr.includes('shoe') || lowerStr.includes('christ') || lowerStr.includes('adopt') || lowerStr.includes('registration') || lowerStr.includes('release')) {
+            setDetectedForm('adopt-a-family')
         } else {
             setDetectedForm('basic')
         }
@@ -264,7 +264,7 @@ END:VCALENDAR`;
                                                 <span className="font-bold text-sm">Enterprise Data</span>
                                                 <span className="text-[10px] text-slate-500">Legal/Medical Extraction</span>
                                             </Button>
-                                            <Button variant="outline" className="h-24 flex-col gap-2 hover:border-indigo-400 hover:bg-indigo-50 dark:hover:bg-indigo-900/20" onClick={() => { setFileName('Dunder Mifflin 5K Req.doc'); setDetectedForm('dunder-mifflin-5k'); handleSimulateScan(); }}>
+                                            <Button variant="outline" className="h-24 flex-col gap-2 hover:border-indigo-400 hover:bg-indigo-50 dark:hover:bg-indigo-900/20" onClick={() => { setFileName('Adopt A Family Reg.doc'); setDetectedForm('adopt-a-family'); handleSimulateScan(); }}>
                                                 <FileText className="w-6 h-6 text-indigo-500" />
                                                 <span className="font-bold text-sm">Non-Profit Signups</span>
                                                 <span className="text-[10px] text-slate-500">Events & Donations</span>
@@ -403,8 +403,8 @@ END:VCALENDAR`;
                                                 </div>
                                             )}
 
-                                            {/* DUNDER MIFFLIN / REGISTRATION COMPLEX DEMO FORM */}
-                                            {detectedForm === 'dunder-mifflin-5k' && (
+                                            {/* ADOPT A FAMILY / REGISTRATION COMPLEX DEMO FORM */}
+                                            {detectedForm === 'adopt-a-family' && (
                                                 <div className="space-y-4">
                                                     <div className="grid grid-cols-2 gap-4">
                                                         <Input density="compact" label="Parent / Guardian Name" placeholder="Full name..." />
