@@ -1,12 +1,16 @@
 "use client"
 
-import { useState, useRef } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import { Card, CardHeader, CardTitle, CardContent, Button, PageHeader, Badge, Input } from '@/components/ui'
 import { UploadCloud, CheckCircle2, Sparkles, Loader2, FileScan, FileText, ArrowRight, ShieldAlert, Bot, ShieldCheck, RefreshCcw } from 'lucide-react'
 import { motion, AnimatePresence } from 'framer-motion'
+import Link from 'next/link'
 
 export default function UploadPage() {
-    const [uploadState, setUploadState] = useState<'idle' | 'scanning' | 'morphing' | 'done'>('idle')
+    const [file, setFile] = useState<File | null>(null)
+    const [uploadState, setUploadState] = useState<'idle' | 'uploading' | 'scanning' | 'morphing' | 'done'>('idle')
+    const [isLoggedIn, setIsLoggedIn] = useState(false)
+    const [scanProgress, setScanProgress] = useState(0)
     const [fileName, setFileName] = useState('')
     const [pasteText, setPasteText] = useState('')
     const [detectedForm, setDetectedForm] = useState<'afl-cio' | 'soles-for-christ' | 'basic'>('basic')
@@ -23,6 +27,12 @@ export default function UploadPage() {
     // Auto-Deploy State
     const [deploySlug, setDeploySlug] = useState('')
     const [isDeploying, setIsDeploying] = useState(false)
+
+    useEffect(() => {
+        if (typeof window !== 'undefined') {
+            setIsLoggedIn(!!localStorage.getItem('vibe-session'))
+        }
+    }, [])
 
     const handleDeployTenant = async () => {
         if (!deploySlug.trim()) return
@@ -425,24 +435,38 @@ export default function UploadPage() {
                                                     <div className="absolute -top-32 -right-32 p-8 opacity-20 blur-3xl rounded-full bg-indigo-500 w-96 h-96 pointer-events-none" />
                                                     <h4 className="font-extrabold text-white text-2xl md:text-3xl text-center relative tracking-tight">Ready to deploy this form?</h4>
                                                     <p className="text-base md:text-lg text-center text-slate-300 px-4 max-w-xl relative">Claim your custom subdomain and launch instantly.</p>
-                                                    <div className="w-full max-w-md mt-6 relative z-10">
-                                                        <div className="flex bg-white rounded-2xl p-1.5 shadow-2xl focus-within:ring-4 focus-within:ring-indigo-500/20 transition-all">
-                                                            <div className="flex items-center flex-1 px-3 bg-white border-r border-slate-100 min-w-0">
-                                                                <input
-                                                                    value={deploySlug}
-                                                                    onChange={e => setDeploySlug(e.target.value.toLowerCase().replace(/[^a-z0-9-]/g, ''))}
-                                                                    onKeyDown={e => e.key === 'Enter' && handleDeployTenant()}
-                                                                    disabled={isDeploying}
-                                                                    className="w-full h-12 text-slate-900 placeholder:text-slate-400 focus:outline-none bg-transparent font-medium"
-                                                                    placeholder="your-company"
-                                                                />
-                                                                <span className="text-slate-400 font-medium whitespace-nowrap hidden sm:block">.vibeintake.com</span>
+                                                    {isLoggedIn ? (
+                                                        <div className="w-full max-w-md mt-6 relative z-10">
+                                                            <div className="flex bg-white rounded-2xl p-1.5 shadow-2xl focus-within:ring-4 focus-within:ring-indigo-500/20 transition-all">
+                                                                <div className="flex items-center flex-1 px-3 bg-white border-r border-slate-100 min-w-0">
+                                                                    <input
+                                                                        value={deploySlug}
+                                                                        onChange={e => setDeploySlug(e.target.value.toLowerCase().replace(/[^a-z0-9-]/g, ''))}
+                                                                        onKeyDown={e => e.key === 'Enter' && handleDeployTenant()}
+                                                                        disabled={isDeploying}
+                                                                        className="w-full h-12 text-slate-900 placeholder:text-slate-400 focus:outline-none bg-transparent font-medium"
+                                                                        placeholder="your-company"
+                                                                    />
+                                                                    <span className="text-slate-400 font-medium whitespace-nowrap hidden sm:block">.vibeintake.com</span>
+                                                                </div>
+                                                                <Button onClick={handleDeployTenant} disabled={!deploySlug.trim() || isDeploying} className="h-12 px-6 bg-indigo-600 hover:bg-indigo-700 disabled:opacity-70 disabled:bg-indigo-600 text-white shadow-md font-bold text-base rounded-xl">
+                                                                    {isDeploying ? <Loader2 className="w-5 h-5 animate-spin mx-4" /> : 'Deploy'}
+                                                                </Button>
                                                             </div>
-                                                            <Button onClick={handleDeployTenant} disabled={!deploySlug.trim() || isDeploying} className="h-12 px-6 bg-indigo-600 hover:bg-indigo-700 disabled:opacity-70 disabled:bg-indigo-600 text-white shadow-md font-bold text-base rounded-xl">
-                                                                {isDeploying ? <Loader2 className="w-5 h-5 animate-spin mx-4" /> : 'Deploy'}
-                                                            </Button>
                                                         </div>
-                                                    </div>
+                                                    ) : (
+                                                        <div className="w-full max-w-md mt-6 relative z-10 text-center bg-white/10 dark:bg-black/40 backdrop-blur-md p-6 rounded-2xl border border-white/20">
+                                                            <div className="mb-4">
+                                                                <ShieldCheck className="w-10 h-10 text-indigo-400 mx-auto mb-2" />
+                                                                <p className="text-white font-medium">Create a free account to secure your permanent subdomain and route submissions.</p>
+                                                            </div>
+                                                            <Link href="/signup">
+                                                                <Button className="h-12 w-full bg-white text-indigo-900 hover:bg-slate-100 font-bold text-base shadow-lg cursor-pointer transform hover:scale-105 transition-all">
+                                                                    Create Account & Deploy
+                                                                </Button>
+                                                            </Link>
+                                                        </div>
+                                                    )}
                                                 </div>
                                             </div>
                                         ) : (
