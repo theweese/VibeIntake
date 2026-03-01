@@ -6,7 +6,7 @@ import { Sparkles, Save, Undo, LayoutTemplate, Send, User, ChevronRight, X, Copy
 import { motion, AnimatePresence } from 'framer-motion'
 import toast from 'react-hot-toast'
 
-type FormField = { id: string; label: string; type?: string; required?: boolean; };
+type FormField = { id: string; label: string; type?: string; required?: boolean; colSpan?: number; placeholder?: string; };
 
 export default function AIFormEditor() {
     const [chatInput, setChatInput] = useState('')
@@ -45,13 +45,28 @@ export default function AIFormEditor() {
         // Fallbacks for the File Upload Demo Pipeline Route
         if (demoFormName === 'Adopt A Family Reg') {
             setFormLayout([
-                { id: 'aaf_1', label: "Parent / Guardian Name", required: true },
-                { id: 'aaf_2', label: "Participant DOB / SSN", type: "sensitive_id" },
-                { id: 'aaf_3', label: "Address City & Zip", required: true },
-                { id: 'aaf_4', label: "Number in Household", type: "number" },
-                { id: 'aaf_5', label: "Total Family Income Bracket", type: "text" },
-                { id: 'aaf_6', label: "Child's First & Last Name", required: true },
-                { id: 'aaf_7', label: "Child Shoe Size", type: "text" }
+                { id: 'aaf_1', label: "Parent / Guardian Name", placeholder: "Full name...", required: true, colSpan: 6 },
+                { id: 'aaf_2', label: "Date", type: "date", colSpan: 6 },
+                { id: 'aaf_3', label: "Participant DOB / SSN", type: "sensitive_id" },
+                { id: 'aaf_4', label: "Address", placeholder: "123 Main St" },
+                { id: 'aaf_5', label: "City & Zip", placeholder: "...", colSpan: 6 },
+                { id: 'aaf_6', label: "County", placeholder: "...", colSpan: 6 },
+                { id: 'aaf_7', label: "Phone Number", type: "tel", placeholder: "(555) 000-0000" },
+                { id: 'aaf_8', label: "Number in Household", placeholder: "Ex: 2 / 2 / 0" },
+                { id: 'aaf_9', label: "Race", placeholder: "Select...", colSpan: 6 },
+                { id: 'aaf_10', label: "Ethnicity", placeholder: "Select...", colSpan: 6 },
+                { id: 'aaf_11', label: "Income Bracket (HUD Size)", placeholder: "Below 30% / 50% / 80% / Over 80%" },
+
+                { id: 'aaf_s1', label: "Child Details", type: "section" },
+                { id: 'aaf_c1', label: "Child's First & Last Name", placeholder: "..." },
+                { id: 'aaf_c2', label: "Birthdate", placeholder: "MM/DD/YYYY", colSpan: 4 },
+                { id: 'aaf_c3', label: "Age", type: "number", placeholder: "0", colSpan: 4 },
+                { id: 'aaf_c4', label: "Sex", placeholder: "M/F", colSpan: 4 },
+                { id: 'aaf_c5', label: "School", placeholder: "...", colSpan: 6 },
+                { id: 'aaf_c6', label: "Grade (P-12)", placeholder: "...", colSpan: 6 },
+                { id: 'aaf_c7', label: "Shoe Size", placeholder: "...", colSpan: 6 },
+                { id: 'aaf_c8', label: "Category (Boys/Girls/Mens/Womens)", placeholder: "Select...", colSpan: 6 },
+                { id: 'aaf_b1', label: "+ Add Another Child", type: "button" }
             ])
         } else if (demoFormName === 'Sterling Cooper Enterprise') {
             setFormLayout([
@@ -113,41 +128,53 @@ export default function AIFormEditor() {
 
                         <div className="p-12 flex-1 overflow-y-auto">
                             <div className="max-w-md mx-auto space-y-6">
-                                <motion.div layout className="space-y-6">
-                                    {formLayout.map((field) => (
-                                        <motion.div
-                                            key={field.id}
-                                            layout
-                                            initial={{ opacity: 0, scale: 0.95 }}
-                                            animate={{ opacity: 1, scale: 1 }}
-                                            className="w-full"
-                                        >
-                                            {field.type === 'sensitive_id' ? (
-                                                <div className="relative mt-2 mb-2 border border-rose-500/30 dark:border-rose-500/20 bg-rose-50/30 dark:bg-rose-950/20 rounded-xl p-4 shadow-sm animate-in fade-in duration-700">
-                                                    <div className="absolute -top-3 right-4 bg-rose-500 text-white text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-wider flex items-center gap-1 shadow-sm">
-                                                        <ShieldAlert className="w-3 h-3" /> PII Shield Active
+                                <motion.div layout className="grid grid-cols-12 gap-x-4 gap-y-6">
+                                    {formLayout.map((field) => {
+                                        const colClass = field.colSpan === 6 ? 'col-span-12 md:col-span-6' : field.colSpan === 4 ? 'col-span-12 md:col-span-4' : 'col-span-12';
+
+                                        return (
+                                            <motion.div
+                                                key={field.id}
+                                                layout
+                                                initial={{ opacity: 0, scale: 0.95 }}
+                                                animate={{ opacity: 1, scale: 1 }}
+                                                className={colClass}
+                                            >
+                                                {field.type === 'section' ? (
+                                                    <div className="mt-4 pt-4 border-t border-slate-200 dark:border-slate-800">
+                                                        <h3 className="font-bold text-lg text-slate-800 dark:text-slate-200">{field.label}</h3>
                                                     </div>
-                                                    <Input
-                                                        density="compact"
-                                                        label={field.label}
-                                                        type="password"
-                                                        placeholder="***-**-####"
-                                                        className="border-rose-200 dark:border-rose-900 bg-white dark:bg-slate-950 focus:ring-rose-400"
-                                                    />
-                                                </div>
-                                            ) : (
-                                                <div className="relative">
-                                                    {field.required && <span className="absolute top-0 right-1 text-rose-500 font-bold text-sm">*</span>}
-                                                    <Input
-                                                        density="compact"
-                                                        label={field.label}
-                                                        placeholder={field.type === 'date' ? 'mm/dd/yyyy' : ''}
-                                                        type={field.type === 'date' ? 'date' : (field.type && field.type !== 'sensitive_id' ? field.type : 'text')}
-                                                    />
-                                                </div>
-                                            )}
-                                        </motion.div>
-                                    ))}
+                                                ) : field.type === 'sensitive_id' ? (
+                                                    <div className="relative mt-2 mb-2 border border-rose-500/30 dark:border-rose-500/20 bg-rose-50/30 dark:bg-rose-950/20 rounded-xl p-4 shadow-sm animate-in fade-in duration-700">
+                                                        <div className="absolute -top-3 right-4 bg-rose-500 text-white text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-wider flex items-center gap-1 shadow-sm">
+                                                            <ShieldAlert className="w-3 h-3" /> PII Shield Active
+                                                        </div>
+                                                        <Input
+                                                            density="compact"
+                                                            label={field.label}
+                                                            type="password"
+                                                            placeholder={field.placeholder || "***-**-####"}
+                                                            className="border-rose-200 dark:border-rose-900 bg-white dark:bg-slate-950 focus:ring-rose-400"
+                                                        />
+                                                    </div>
+                                                ) : field.type === 'button' ? (
+                                                    <Button variant="outline" className="w-full border-dashed border-2 py-4 h-auto mt-2 text-slate-500 hover:text-indigo-600 hover:border-indigo-300 dark:hover:border-indigo-800 transition-colors">
+                                                        {field.label}
+                                                    </Button>
+                                                ) : (
+                                                    <div className="relative">
+                                                        {field.required && <span className="absolute top-0 right-1 text-rose-500 font-bold text-sm">*</span>}
+                                                        <Input
+                                                            density="compact"
+                                                            label={field.label}
+                                                            placeholder={field.placeholder || (field.type === 'date' ? 'mm/dd/yyyy' : '')}
+                                                            type={field.type === 'date' ? 'date' : (field.type && field.type !== 'sensitive_id' && field.type !== 'section' && field.type !== 'button' ? field.type : 'text')}
+                                                        />
+                                                    </div>
+                                                )}
+                                            </motion.div>
+                                        )
+                                    })}
                                 </motion.div>
                             </div>
                         </div>
