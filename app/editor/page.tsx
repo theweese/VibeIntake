@@ -133,8 +133,23 @@ export default function AIFormEditor() {
                     return next
                 })
                 setChatMessages(prev => [...prev, { role: 'ai', text: "Added Notes field to the layout." }])
+            } else if (inputLower.includes('split')) {
+                setFormLayout(prev => {
+                    const next = [...prev]
+                    const targetIndex = next.findIndex(f => f.label.toLowerCase().includes('first & last') || f.label.toLowerCase().includes('first and last'))
+                    if (targetIndex !== -1) {
+                        const target = next[targetIndex]
+                        const labelBase = target.label.toLowerCase().includes('child') ? "Child's" : ""
+                        next.splice(targetIndex, 1,
+                            { ...target, label: labelBase ? `${labelBase} First Name` : "First Name", id: `${target.id}_first`, colSpan: 6 },
+                            { ...target, label: labelBase ? `${labelBase} Last Name` : "Last Name", id: `${target.id}_last`, colSpan: 6 }
+                        )
+                    }
+                    return next
+                })
+                setChatMessages(prev => [...prev, { role: 'ai', text: "Split the name into First Name and Last Name fields." }])
             } else {
-                setChatMessages(prev => [...prev, { role: 'ai', text: "I didn't quite catch that. Try asking to 'Add a notes field' or 'Remove the notes field'." }])
+                setChatMessages(prev => [...prev, { role: 'ai', text: "I didn't quite catch that. Try asking to 'Add a notes field', 'Remove the notes field', or 'Split the name'." }])
             }
             setIsAiThinking(false)
         }, 1500)
