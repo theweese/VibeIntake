@@ -71,19 +71,19 @@ export default function SignupPage() {
                         <div className="space-y-3 mb-6">
                             <Button
                                 variant="outline"
-                                className="w-full h-11 border-slate-300 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-300 relative overflow-hidden group"
+                                className="w-full h-11 border-slate-300 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-300 relative overflow-hidden group opacity-50 cursor-not-allowed"
                                 onClick={() => handleSsoClick('Google')}
                             >
-                                <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/google/google-original.svg" className="w-5 h-5 mr-3" alt="Google" />
-                                Continue with Google
+                                <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/google/google-original.svg" className="w-5 h-5 mr-3 grayscale" alt="Google" />
+                                Continue with Google (Coming Soon)
                             </Button>
                             <Button
                                 variant="outline"
-                                className="w-full h-11 border-slate-300 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-300 relative overflow-hidden group"
+                                className="w-full h-11 border-slate-300 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-300 relative overflow-hidden group opacity-50 cursor-not-allowed"
                                 onClick={() => handleSsoClick('Microsoft 365')}
                             >
-                                <img src="https://upload.wikimedia.org/wikipedia/commons/4/44/Microsoft_logo.svg" className="w-5 h-5 mr-3" alt="Microsoft" />
-                                Continue with Microsoft 365
+                                <img src="https://upload.wikimedia.org/wikipedia/commons/4/44/Microsoft_logo.svg" className="w-5 h-5 mr-3 grayscale" alt="Microsoft" />
+                                Continue with Microsoft 365 (Coming Soon)
                             </Button>
                         </div>
 
