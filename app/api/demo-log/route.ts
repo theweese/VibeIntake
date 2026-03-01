@@ -11,18 +11,21 @@ export async function POST(req: Request) {
             expertise: data.expertise
         }
 
-        const logDir = path.join(process.cwd(), 'logs')
-        const logFile = path.join(logDir, 'demo_interactions.jsonl')
-
-        // Ensure directory exists
+        // Attempt to log locally (will fail gracefully on Vercel read-only system)
         try {
-            await fs.access(logDir)
-        } catch {
-            await fs.mkdir(logDir, { recursive: true })
-        }
+            const logDir = path.join(process.cwd(), 'logs')
+            const logFile = path.join(logDir, 'demo_interactions.jsonl')
 
-        // Append to JSONL file
-        await fs.appendFile(logFile, JSON.stringify(logEntry) + '\n')
+            try {
+                await fs.access(logDir)
+            } catch {
+                await fs.mkdir(logDir, { recursive: true })
+            }
+
+            await fs.appendFile(logFile, JSON.stringify(logEntry) + '\n')
+        } catch (warn) {
+            console.warn("Safely skipping file log (expected in serverless): ", warn)
+        }
 
         // --- SIMULATED AI EXTRACTION LOGIC ---
         // To make the demo feel "live", we parse the user's chat messages for keywords
