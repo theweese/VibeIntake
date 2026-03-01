@@ -50,13 +50,13 @@ export default function PipelinesPage() {
                     onClick={() => setActiveTab('rules')}
                     className={`flex-1 py-3 px-4 rounded-xl text-sm font-semibold transition-all flex items-center justify-center gap-2 ${activeTab === 'rules' ? 'bg-white dark:bg-slate-900 shadow-sm text-indigo-600 dark:text-indigo-400' : 'text-slate-600 dark:text-slate-400 hover:bg-slate-200/50 dark:hover:bg-slate-800'}`}
                 >
-                    <Clock className="w-4 h-4" /> Rules & Cron Jobs
+                    <Clock className="w-4 h-4" /> Scheduled Tasks
                 </button>
                 <button
                     onClick={() => setActiveTab('integrations')}
                     className={`flex-1 py-3 px-4 rounded-xl text-sm font-semibold transition-all flex items-center justify-center gap-2 ${activeTab === 'integrations' ? 'bg-white dark:bg-slate-900 shadow-sm text-indigo-600 dark:text-indigo-400' : 'text-slate-600 dark:text-slate-400 hover:bg-slate-200/50 dark:hover:bg-slate-800'}`}
                 >
-                    <ServerCog className="w-4 h-4" /> Enterprise Sync
+                    <ServerCog className="w-4 h-4" /> Data Sync
                 </button>
             </div>
 
@@ -69,7 +69,7 @@ export default function PipelinesPage() {
                         <div className="lg:col-span-2 space-y-6">
                             {pipelines.map((pipe) => (
                                 <Card key={pipe.id} className="group hover:border-indigo-300 dark:hover:border-indigo-700/50 transition-colors">
-                                    <CardContent className="p-6 flex flex-col md:flex-row md:items-center justify-between gap-6">
+                                    <div className="p-6 flex flex-col md:flex-row md:items-center justify-between gap-6">
 
                                         <div className="flex items-start gap-4">
                                             <div className="p-3 bg-slate-100 dark:bg-slate-800 rounded-xl shrink-0 mt-1">
@@ -99,7 +99,7 @@ export default function PipelinesPage() {
                                             </Button>
                                         </div>
 
-                                    </CardContent>
+                                    </div>
                                 </Card>
                             ))}
                         </div>
