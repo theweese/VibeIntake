@@ -1,13 +1,15 @@
 "use client"
 
-import { useState, useEffect } from 'react'
-import { Card, CardHeader, CardTitle, CardContent, Button, Input } from '@/components/ui'
-import { Fingerprint, Building2, User, Mail, Lock, ArrowRight, Loader2 } from 'lucide-react'
+import { useState, useEffect, Suspense } from 'react'
+import { Card, CardContent, Button, Input } from '@/components/ui'
+import { Fingerprint, Building2, User, Mail, ArrowRight, Loader2 } from 'lucide-react'
 import { motion, AnimatePresence } from 'framer-motion'
 import Link from 'next/link'
 import toast from 'react-hot-toast'
+import { useSearchParams } from 'next/navigation'
 
-export default function SignupPage() {
+function SignupContent() {
+    const searchParams = useSearchParams()
     const [isSubmitting, setIsSubmitting] = useState(false)
     const [isEmailSent, setIsEmailSent] = useState(false)
     const [mode, setMode] = useState<'signup' | 'login'>('signup')
@@ -19,13 +21,12 @@ export default function SignupPage() {
     })
 
     useEffect(() => {
-        if (typeof window !== 'undefined') {
-            const params = new URLSearchParams(window.location.search)
-            if (params.get('mode') === 'login') {
-                setMode('login')
-            }
+        if (searchParams && searchParams.get('mode') === 'login') {
+            setMode('login')
+        } else {
+            setMode('signup')
         }
-    }, [])
+    }, [searchParams])
 
     const handleSsoClick = (provider: string) => {
         toast('Third-party local sign-ups with ' + provider + ' are currently in development as we finalize our infrastructure.', {
@@ -206,11 +207,15 @@ export default function SignupPage() {
                         </AnimatePresence>
                     </CardContent>
                 </Card>
-
-                <p className="text-center text-sm text-slate-500 mt-6">
-                    Already have an account? <Link href="#" className="text-indigo-600 dark:text-indigo-400 font-medium hover:underline">Sign in</Link>
-                </p>
             </motion.div>
         </div>
+    )
+}
+
+export default function SignupPage() {
+    return (
+        <Suspense fallback={<div className="min-h-[calc(100vh-64px)] flex items-center justify-center p-4 bg-slate-50 dark:bg-[#0A0D14]"><Loader2 className="w-8 h-8 animate-spin text-indigo-500" /></div>}>
+            <SignupContent />
+        </Suspense>
     )
 }
