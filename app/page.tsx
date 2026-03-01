@@ -27,14 +27,14 @@ export default function MarketingHome() {
 
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center">
                     <h1 className="text-5xl md:text-7xl font-black tracking-tight text-slate-900 dark:text-white leading-[1.1] max-w-5xl mx-auto mb-8 animate-in fade-in slide-in-from-bottom-2 duration-700 delay-150 fill-mode-backwards block">
-                        Have forms you have to fill out <br className="hidden md:block" />
+                        Relying on pen and paper <br className="hidden md:block" />
                         <span className="bg-clip-text text-transparent bg-gradient-to-r from-indigo-500 to-fuchsia-500">
-                            manually?
+                            forms?
                         </span>
                     </h1>
 
                     <p className="text-xl text-slate-600 dark:text-slate-400 max-w-2xl mx-auto leading-relaxed mb-10 animate-in fade-in slide-in-from-bottom-2 duration-700 delay-300 fill-mode-backwards block">
-                        Let us create a web-based form to assist with it.
+                        Let us assist you in replacing them with secure, web-based digital alternatives.
                     </p>
 
                     <div className="flex flex-col sm:flex-row items-center justify-center gap-4 animate-in fade-in slide-in-from-bottom-2 duration-700 delay-500 fill-mode-backwards">
