@@ -25,7 +25,7 @@ export default function PricingPage() {
             name: "Business",
             price: "Custom",
             description: "For municipalities, enterprise clinics, and organizations requiring massive historical data imports.",
-            features: ["Unlimited Scans", "Dedicated VPC Vault", "Human-in-the-Loop Queue", "Custom Sub-Accounts"],
+            features: ["Custom Scan Volume", "Dedicated VPC Vault", "Human-in-the-Loop Queue", "Custom Sub-Accounts"],
             icon: <Building2 className="w-6 h-6 text-amber-500" />,
             highlight: false
         }
