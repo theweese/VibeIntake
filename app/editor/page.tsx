@@ -92,9 +92,10 @@ export default function AIFormEditor() {
             // Mock AI Action executing
             const inputLower = currentInput.toLowerCase()
 
-            if (inputLower.includes('remove') && (inputLower.includes('note') || inputLower.includes('comment'))) {
+            if (inputLower.includes('remove') || inputLower.includes('never mind') || inputLower.includes('undo')) {
                 setFormLayout(prev => {
                     const next = [...prev]
+                    // If they just say "remove" or "never mind", let's assume they mean to remove the Notes/Comments field we just added for the demo context.
                     for (let i = next.length - 1; i >= 0; i--) {
                         if (next[i].label.toLowerCase().includes('note') || next[i].label.toLowerCase().includes('comment')) {
                             next.splice(i, 1) // Slice them out
