@@ -2,7 +2,7 @@
 
 import { useState, useRef, useEffect } from 'react'
 import { Card, CardHeader, CardTitle, CardContent, Button, PageHeader, Badge, Input } from '@/components/ui'
-import { UploadCloud, CheckCircle2, Sparkles, Loader2, FileScan, FileText, ArrowRight, ShieldAlert, Bot, ShieldCheck, RefreshCcw } from 'lucide-react'
+import { UploadCloud, CheckCircle2, Sparkles, Loader2, FileScan, FileText, ArrowRight, ShieldAlert, Bot, ShieldCheck, RefreshCcw, Calendar, Bell, Smartphone, CalendarPlus } from 'lucide-react'
 import { motion, AnimatePresence } from 'framer-motion'
 import Link from 'next/link'
 
@@ -13,7 +13,7 @@ export default function UploadPage() {
     const [scanProgress, setScanProgress] = useState(0)
     const [fileName, setFileName] = useState('')
     const [pasteText, setPasteText] = useState('')
-    const [detectedForm, setDetectedForm] = useState<'afl-cio' | 'soles-for-christ' | 'basic'>('basic')
+    const [detectedForm, setDetectedForm] = useState<'afl-cio' | 'soles-for-christ' | 'basic' | 'grandma-calendar'>('basic')
     const fileInputRef = useRef<HTMLInputElement>(null)
 
     // Interactive Demo Chat State
@@ -133,6 +133,39 @@ export default function UploadPage() {
         }, 2000)
     }
 
+    const generateICS = () => {
+        const icsContent = `BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//VibeIntake//Personal Schedule//EN
+BEGIN:VEVENT
+UID:${Date.now()}1@vibeintake.com
+DTSTAMP:20260228T120000Z
+DTSTART:20260301T230000Z
+DTEND:20260302T010000Z
+SUMMARY:Sunday Dinner
+DESCRIPTION:Family dinner - bring the casserole dish back.
+END:VEVENT
+BEGIN:VEVENT
+UID:${Date.now()}2@vibeintake.com
+DTSTAMP:20260228T120000Z
+DTSTART:20260303T190000Z
+DTEND:20260303T200000Z
+SUMMARY:Dr. Smith Appt
+DESCRIPTION:Bring updated medication list.
+END:VEVENT
+END:VCALENDAR`;
+
+        const blob = new Blob([icsContent], { type: 'text/calendar;charset=utf-8' });
+        const url = window.URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = url;
+        link.setAttribute('download', 'Schedule_Extracted.ics');
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        window.URL.revokeObjectURL(url);
+    }
+
     const resetFlow = () => {
         setUploadState('idle')
         setPasteText('')
@@ -216,6 +249,28 @@ export default function UploadPage() {
                                         <div className="mt-3 flex justify-end">
                                             <Button onClick={handlePasteSubmit} disabled={!pasteText.trim()} className="bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl h-12 px-6 shadow-md">
                                                 Analyze Text <ArrowRight className="w-4 h-4 ml-2" />
+                                            </Button>
+                                        </div>
+                                    </div>
+
+                                    {/* Quick Try Demo Presets */}
+                                    <div className="mt-4 pt-8 border-t border-slate-200 dark:border-slate-800">
+                                        <label className="text-sm font-medium text-slate-700 dark:text-slate-300 flex items-center gap-2 mb-4 ml-1">Option 3: Quick Try (Pitch Presets)</label>
+                                        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                                            <Button variant="outline" className="h-24 flex-col gap-2 hover:border-indigo-400 hover:bg-indigo-50 dark:hover:bg-indigo-900/20" onClick={() => { setFileName('AFL-CIO PII Form.pdf'); setDetectedForm('afl-cio'); handleSimulateScan(); }}>
+                                                <FileScan className="w-6 h-6 text-indigo-500" />
+                                                <span className="font-bold text-sm">Enterprise Data</span>
+                                                <span className="text-[10px] text-slate-500">Legal/Medical Extraction</span>
+                                            </Button>
+                                            <Button variant="outline" className="h-24 flex-col gap-2 hover:border-indigo-400 hover:bg-indigo-50 dark:hover:bg-indigo-900/20" onClick={() => { setFileName('Soles for Christ Req.doc'); setDetectedForm('soles-for-christ'); handleSimulateScan(); }}>
+                                                <FileText className="w-6 h-6 text-indigo-500" />
+                                                <span className="font-bold text-sm">Non-Profit Signups</span>
+                                                <span className="text-[10px] text-slate-500">Events & Donations</span>
+                                            </Button>
+                                            <Button variant="outline" className="h-24 flex-col gap-2 hover:border-fuchsia-400 hover:bg-fuchsia-50 dark:hover:bg-fuchsia-900/20" onClick={() => { setFileName('Grandmas Weekly Schedule.jpg'); setDetectedForm('grandma-calendar'); handleSimulateScan(); }}>
+                                                <Calendar className="w-6 h-6 text-fuchsia-500" />
+                                                <span className="font-bold text-sm">Personal Use</span>
+                                                <span className="text-[10px] text-slate-500">Handwritten Schedules</span>
                                             </Button>
                                         </div>
                                     </div>
@@ -391,6 +446,66 @@ export default function UploadPage() {
                                                             + Add Another Child
                                                         </Button>
                                                     </div>
+                                                </div>
+                                            )}
+
+                                            {/* GRANDMA'S SCHEDULE / PERSONAL COMPLEX DEMO FORM */}
+                                            {detectedForm === 'grandma-calendar' && (
+                                                <div className="space-y-6 animate-in fade-in duration-500">
+                                                    <div className="bg-fuchsia-50 dark:bg-fuchsia-900/20 border border-fuchsia-200 dark:border-fuchsia-800 rounded-2xl p-6 flex flex-col items-center text-center">
+                                                        <div className="bg-fuchsia-100 dark:bg-fuchsia-800 p-4 rounded-full mb-4 shadow-sm border border-fuchsia-200 dark:border-fuchsia-700">
+                                                            <CalendarPlus className="w-8 h-8 text-fuchsia-600 dark:text-fuchsia-300" />
+                                                        </div>
+                                                        <h4 className="font-black text-xl text-fuchsia-900 dark:text-fuchsia-100 mb-2">Schedule Digitized</h4>
+                                                        <p className="text-fuchsia-800 dark:text-fuchsia-300/80 text-sm max-w-md">
+                                                            We successfully read your handwritten notes. Here is your digital itinerary. You can export this directly to your device's calendar.
+                                                        </p>
+                                                    </div>
+
+                                                    <div className="space-y-3">
+                                                        <div className="flex items-center gap-4 bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-800 p-4 rounded-xl shadow-sm">
+                                                            <div className="w-12 h-12 rounded-lg bg-red-100 dark:bg-red-900/40 text-red-600 dark:text-red-400 flex flex-col items-center justify-center font-bold tracking-tighter shadow-inner shrink-0 leading-tight">
+                                                                <span className="text-[10px] uppercase opacity-80">Mar</span>
+                                                                <span className="text-lg">01</span>
+                                                            </div>
+                                                            <div className="flex-1">
+                                                                <h5 className="font-bold text-slate-900 dark:text-slate-100">Sunday Dinner</h5>
+                                                                <p className="text-xs text-slate-500">6:00 PM - Bring the casserole dish back.</p>
+                                                            </div>
+                                                        </div>
+                                                        <div className="flex items-center gap-4 bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-800 p-4 rounded-xl shadow-sm">
+                                                            <div className="w-12 h-12 rounded-lg bg-indigo-100 dark:bg-indigo-900/40 text-indigo-600 dark:text-indigo-400 flex flex-col items-center justify-center font-bold tracking-tighter shadow-inner shrink-0 leading-tight">
+                                                                <span className="text-[10px] uppercase opacity-80">Mar</span>
+                                                                <span className="text-lg">03</span>
+                                                            </div>
+                                                            <div className="flex-1">
+                                                                <h5 className="font-bold text-slate-900 dark:text-slate-100">Dr. Smith Appointments</h5>
+                                                                <p className="text-xs text-slate-500">2:00 PM - Bring updated medication list.</p>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <div className="mt-8 pt-6 border-t border-slate-200 dark:border-slate-800 space-y-4">
+                                                        <h3 className="font-bold text-sm text-slate-800 dark:text-slate-200 uppercase tracking-widest flex items-center gap-2">
+                                                            <Bell className="w-4 h-4 text-slate-400" /> Notifications & Actions
+                                                        </h3>
+                                                        <div className="flex items-center justify-between p-3 bg-slate-50 dark:bg-slate-900 rounded-lg border border-slate-200 dark:border-slate-800">
+                                                            <div className="flex items-center gap-3">
+                                                                <Smartphone className="w-5 h-5 text-indigo-500" />
+                                                                <div>
+                                                                    <p className="font-semibold text-sm text-slate-900 dark:text-slate-100">SMS Reminders</p>
+                                                                    <p className="text-[10px] text-slate-500">Text me 2 hours before events</p>
+                                                                </div>
+                                                            </div>
+                                                            <div className="w-10 h-6 bg-indigo-500 rounded-full relative cursor-pointer shadow-inner">
+                                                                <div className="w-4 h-4 rounded-full bg-white absolute right-1 top-1 shadow-sm"></div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <Button onClick={generateICS} className="w-full h-14 text-base font-bold rounded-2xl bg-slate-900 hover:bg-slate-800 dark:bg-fuchsia-600 dark:hover:bg-fuchsia-700 text-white shadow-xl mt-4 flex items-center justify-center gap-2">
+                                                        <CalendarPlus className="w-5 h-5" /> Add to Apple / Google Calendar (.ics)
+                                                    </Button>
                                                 </div>
                                             )}
 
