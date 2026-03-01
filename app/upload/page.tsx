@@ -13,7 +13,7 @@ export default function UploadPage() {
     const [scanProgress, setScanProgress] = useState(0)
     const [fileName, setFileName] = useState('')
     const [pasteText, setPasteText] = useState('')
-    const [detectedForm, setDetectedForm] = useState<'afl-cio' | 'soles-for-christ' | 'basic' | 'grandma-calendar'>('basic')
+    const [detectedForm, setDetectedForm] = useState<'sterling-cooper' | 'dunder-mifflin-5k' | 'basic' | 'grandma-calendar'>('basic')
     const fileInputRef = useRef<HTMLInputElement>(null)
 
     // Interactive Demo Chat State
@@ -96,10 +96,10 @@ export default function UploadPage() {
 
             // Core Demo Hack: intelligently route image files vs document files to our two primary complex mock-ups
             const lowerName = rawName.toLowerCase()
-            if (file.type.includes('image') || lowerName.includes('jpg') || lowerName.includes('png') || lowerName.includes('jpeg') || lowerName.includes('afl')) {
-                setDetectedForm('afl-cio')
-            } else if (lowerName.includes('doc') || lowerName.includes('pdf') || lowerName.includes('sole') || lowerName.includes('christ') || lowerName.includes('registration')) {
-                setDetectedForm('soles-for-christ')
+            if (file.type.includes('image') || lowerName.includes('jpg') || lowerName.includes('png') || lowerName.includes('jpeg') || lowerName.includes('afl') || lowerName.includes('sterling')) {
+                setDetectedForm('sterling-cooper')
+            } else if (lowerName.includes('doc') || lowerName.includes('pdf') || lowerName.includes('sole') || lowerName.includes('christ') || lowerName.includes('dunder') || lowerName.includes('registration')) {
+                setDetectedForm('dunder-mifflin-5k')
             } else {
                 setDetectedForm('basic')
             }
@@ -112,10 +112,10 @@ export default function UploadPage() {
         setFileName("Pasted Document Content")
 
         const lowerStr = pasteText.toLowerCase()
-        if (lowerStr.includes('afl') || lowerStr.includes('cio') || lowerStr.includes('community') || lowerStr.includes('service')) {
-            setDetectedForm('afl-cio')
-        } else if (lowerStr.includes('sole') || lowerStr.includes('shoe') || lowerStr.includes('christ') || lowerStr.includes('registration') || lowerStr.includes('release')) {
-            setDetectedForm('soles-for-christ')
+        if (lowerStr.includes('afl') || lowerStr.includes('cio') || lowerStr.includes('sterling') || lowerStr.includes('community') || lowerStr.includes('service')) {
+            setDetectedForm('sterling-cooper')
+        } else if (lowerStr.includes('sole') || lowerStr.includes('shoe') || lowerStr.includes('christ') || lowerStr.includes('dunder') || lowerStr.includes('registration') || lowerStr.includes('release')) {
+            setDetectedForm('dunder-mifflin-5k')
         } else {
             setDetectedForm('basic')
         }
@@ -257,12 +257,12 @@ END:VCALENDAR`;
                                     <div className="mt-4 pt-8 border-t border-slate-200 dark:border-slate-800">
                                         <label className="text-sm font-medium text-slate-700 dark:text-slate-300 flex items-center gap-2 mb-4 ml-1">Option 3: Quick Try (Pitch Presets)</label>
                                         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                                            <Button variant="outline" className="h-24 flex-col gap-2 hover:border-indigo-400 hover:bg-indigo-50 dark:hover:bg-indigo-900/20" onClick={() => { setFileName('AFL-CIO PII Form.pdf'); setDetectedForm('afl-cio'); handleSimulateScan(); }}>
+                                            <Button variant="outline" className="h-24 flex-col gap-2 hover:border-indigo-400 hover:bg-indigo-50 dark:hover:bg-indigo-900/20" onClick={() => { setFileName('Sterling Cooper PII Form.pdf'); setDetectedForm('sterling-cooper'); handleSimulateScan(); }}>
                                                 <FileScan className="w-6 h-6 text-indigo-500" />
                                                 <span className="font-bold text-sm">Enterprise Data</span>
                                                 <span className="text-[10px] text-slate-500">Legal/Medical Extraction</span>
                                             </Button>
-                                            <Button variant="outline" className="h-24 flex-col gap-2 hover:border-indigo-400 hover:bg-indigo-50 dark:hover:bg-indigo-900/20" onClick={() => { setFileName('Soles for Christ Req.doc'); setDetectedForm('soles-for-christ'); handleSimulateScan(); }}>
+                                            <Button variant="outline" className="h-24 flex-col gap-2 hover:border-indigo-400 hover:bg-indigo-50 dark:hover:bg-indigo-900/20" onClick={() => { setFileName('Dunder Mifflin 5K Req.doc'); setDetectedForm('dunder-mifflin-5k'); handleSimulateScan(); }}>
                                                 <FileText className="w-6 h-6 text-indigo-500" />
                                                 <span className="font-bold text-sm">Non-Profit Signups</span>
                                                 <span className="text-[10px] text-slate-500">Events & Donations</span>
@@ -339,8 +339,8 @@ END:VCALENDAR`;
                                                 </div>
                                             )}
 
-                                            {/* AFL-CIO COMPLEX DEMO FORM */}
-                                            {detectedForm === 'afl-cio' && (
+                                            {/* STERLING COOPER COMPLEX DEMO FORM */}
+                                            {detectedForm === 'sterling-cooper' && (
                                                 <div className="space-y-4">
                                                     <div className="grid grid-cols-2 gap-4">
                                                         <Input density="compact" label="Participant's Name" placeholder="Full name..." />
@@ -401,8 +401,8 @@ END:VCALENDAR`;
                                                 </div>
                                             )}
 
-                                            {/* SOLES FOR CHRIST / REGISTRATION COMPLEX DEMO FORM */}
-                                            {detectedForm === 'soles-for-christ' && (
+                                            {/* DUNDER MIFFLIN / REGISTRATION COMPLEX DEMO FORM */}
+                                            {detectedForm === 'dunder-mifflin-5k' && (
                                                 <div className="space-y-4">
                                                     <div className="grid grid-cols-2 gap-4">
                                                         <Input density="compact" label="Parent / Guardian Name" placeholder="Full name..." />
