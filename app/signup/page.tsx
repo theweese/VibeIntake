@@ -66,7 +66,7 @@ export default function SignupPage() {
                 </div>
 
                 <Card className="border-slate-200 dark:border-slate-800 shadow-xl overflow-hidden">
-                    <CardContent className="p-8">
+                    <CardContent className="p-8 pt-8">
                         {/* Fake SSO Buttons */}
                         <div className="flex flex-col gap-3 mb-8">
                             <Button
